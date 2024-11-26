@@ -1,0 +1,193 @@
+.student {
+    width: 100%;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.student-wrapper {
+    width: 90%;
+    margin: 30px auto 60px auto;
+}
+
+.student-status {
+    top: 53px;
+    width: 100%;
+    margin: auto;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.student-success-status {
+    width: fit-content;
+    background-color: rgb(0, 255, 0);
+}
+
+.student-failure-status {
+    width: fit-content;
+    background-color: pink;
+}
+
+.student-delete-alert-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.student-delete-alert {
+    background-color: #BFFFBF;
+    width: 100%;
+    max-width: 300px;
+    height: fit-content;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.student-delete-alert p {
+    margin: 0;
+}
+
+.student-delete-alert-button-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.student-delete-alert-button-div button {
+    color: #ffffff;
+    background-color: green;
+    border: none;
+    padding: 5px 10px;
+    min-width: 60px;
+}
+
+.student-delete-alert-button-div button:hover {
+    color: green;
+    background-color: #ffffff;
+    border: dotted green 2px;
+}
+
+.student-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.student-title p {
+    margin: 0;
+}
+
+.student-navigation {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.student-is-voted {
+    align-items: center;
+    justify-content: center;
+}
+
+.student-is-voted p {
+    background-color: green;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.student-wrapper button {
+    background-color: green;
+    border-radius: 5px;
+    border: none;
+    color: #ffffff;
+    padding: 5px;
+    font-weight: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.student-wrapper button:hover {
+    color: green;
+    background-color: transparent;
+}
+
+.student-navigation-buttons:hover {
+    transform: scale(1.2);
+    border: dotted 1px green;
+    border-radius: 5px;
+}
+
+.student-photo-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100px;
+    border-radius: 50%;
+    border: dotted 5px green;
+    overflow: hidden;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.student-photo-div img {
+    width: 100%;
+    aspect-ratio: 1/1;
+
+}
+
+.student-details {
+    margin: auto;
+    max-width: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 5px 5px 15px green;
+}
+
+.student-details-info {
+    display: flex;
+    column-gap: 10px;
+}
+
+.student-details-info {
+    background-color: #e0e3e1;
+    margin: 2px;
+    text-transform: capitalize;
+}
+
+.student-details-info p:first-child {
+    font-weight: bold;
+}
+
+
+@media screen and (max-width: 460px) {
+    .student {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 260px) {
+    .student {
+        padding-top: 40px;
+    }
+}
+
+@media screen and (max-width: 230px) {
+    .student {
+        padding-top: 80px;
+    }
+}

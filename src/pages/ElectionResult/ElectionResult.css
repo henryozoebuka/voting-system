@@ -1,0 +1,116 @@
+.election-result {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+}
+
+.election-result-wrapper {
+    width: 90%;
+    margin: 0 auto 60px auto;
+    display: flex;
+    overflow: hidden;
+}
+
+.election-result-category {
+    min-width: 100%;
+    display: flex;
+}
+
+.election-result-form-action-buttons-div {
+    width: 90%;
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+    border: none;
+}
+
+.election-result-form-action-buttons-div button {
+    display: flex;
+    column-gap: 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: green 2px solid;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px green;
+    margin: 10px;
+    color: green;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.election-result-form-action-buttons-div button:hover {
+    transform: scale(1.1);
+    background-color: green;
+    color: #ffffff;
+}
+
+
+.election-result-section {
+    min-width: 100%;
+}
+
+.election-result-section-title {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.election-result-section-title h2 {
+    background-color: green;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: capitalize;
+}
+
+.election-result-vote-count-details {
+    display: flex;
+    column-gap: 10px;
+}
+
+.election-result-vote-count-details p {
+    text-transform: capitalize;
+}
+
+.election-vote-percentage {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.election-result-vote-details-wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 10px;
+}
+
+.election-result-vote-details-wrapper p {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 460px) {
+    .election-result {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }   
+}
+
+@media screen and (max-width: 260px) {
+    .election-result {
+        padding-top: 40px;
+    }   
+}
+
+@media screen and (max-width: 230px) {
+    .election-result {
+        padding-top: 80px;
+    }   
+}

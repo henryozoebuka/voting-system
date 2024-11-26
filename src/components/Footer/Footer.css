@@ -1,0 +1,29 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    min-height: 30px;
+    background-color: green;
+}
+
+.footer-wrapper {
+    width: 90%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-wrapper > p {
+    text-align: center;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* 
+@media screen and (max-width: 560px) {
+    .footer {
+        height: 50px;
+    }   
+} */

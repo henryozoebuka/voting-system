@@ -1,0 +1,179 @@
+.create-user {
+    width: 100%;
+    background-color: #BFFFBF;
+    margin-top: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.create-user-wrapper {
+    width: 90%;
+    margin: 30px auto 60px auto;
+}
+
+.create-user-title {
+    width: 90%;
+    margin: auto;
+}
+
+.create-user-title p {
+    margin: auto auto 20px auto;
+}
+
+.create-user-title > p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.create-user input[type= 'text'] {
+    width: 100%;
+    height: 20px;
+    margin-bottom: .5rem;
+}
+
+.create-user input[type= 'password'] {
+    width: 100%;
+    height: 20px;
+    margin-bottom: .5rem;
+}
+
+.create-user input[type= 'email'] {
+    width: 100%;
+    height: 20px;
+    margin-bottom: .5rem;
+}
+
+.create-user input[type= 'number'] {
+    width: 100%;
+    height: 20px;
+    margin-bottom: .5rem;
+}
+
+.create-user input[type= 'file'] {
+    cursor: pointer;
+}
+
+.create-user-male label, .create-user-female label {
+    cursor: pointer;
+}
+
+.create-user input[type= 'submit'] {
+    width: 102%;
+    border: none;
+    height: 30px;
+    background-color: green;
+    margin: 5px auto;
+    color: #ffffff;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.create-user select {
+    width: 102%;
+    height: 25px;
+    margin-bottom: .5rem;
+}
+
+.create-user-status {
+    top: 53px;
+    width: 100%;
+    margin: auto;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-user-success-status {
+    width: fit-content;
+    background-color: rgb(0, 255, 0);
+}
+
+.create-user-failure-status {
+    width: fit-content;
+    background-color: pink;
+}
+
+.create-user-form-div {
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px green;
+}
+
+.create-user-form-div form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.create-user-form-div form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-user-form-div form > * {
+    width: 98%;
+    
+}
+
+.create-user-gender-input {
+    border: 1px dotted gray;
+    margin-bottom: .5rem;
+    width: 101.5%;
+}
+
+
+.create-user-form-div form > div > div {
+    display: flex;
+}
+
+
+.create-user-gender-input > div  {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    height: 20px;
+    padding: 0;
+}
+
+.create-user-photo-input {
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 460px) {
+    .create-user {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .create-user-status {
+        top: 70px;
+    }
+}
+
+@media screen and (max-width: 260px) {
+    .create-user {
+        padding-top: 40px;
+    }   
+
+    .create-user-status {
+        top: 100px;
+    }
+}
+
+@media screen and (max-width: 230px) {
+    .create-user {
+        padding-top: 50px;
+    }
+
+    .create-user-status {
+        top: 130px;
+    }
+}

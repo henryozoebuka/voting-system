@@ -1,0 +1,192 @@
+.super-admin-user {
+    width: 100%;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.super-admin-user-wrapper {
+    width: 90%;
+    margin: 30px auto 60px auto;
+}
+
+.super-admin-user-status {
+    top: 53px;
+    width: 100%;
+    margin: auto;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.super-admin-user-success-status {
+    width: fit-content;
+    background-color: rgb(0, 255, 0);
+}
+
+.super-admin-user-failure-status {
+    width: fit-content;
+    background-color: pink;
+}
+
+.super-admin-user-delete-alert-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.super-admin-user-delete-alert {
+    background-color: #BFFFBF;
+    width: 100%;
+    max-width: 300px;
+    height: fit-content;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.super-admin-user-delete-alert p {
+    margin: 0;
+}
+
+.super-admin-user-delete-alert-button-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.super-admin-user-delete-alert-button-div button {
+    color: #ffffff;
+    background-color: green;
+    border: none;
+    padding: 5px 10px;
+    min-width: 60px;
+}
+
+.super-admin-user-delete-alert-button-div button:hover {
+    color: green;
+    background-color: #ffffff;
+    border: dotted green 2px;
+}
+
+.super-admin-user-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.super-admin-user-title p {
+    margin: 0;
+}
+
+.super-admin-user-navigation {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.super-admin-user-is-voted {
+    align-items: center;
+    justify-content: center;
+}
+
+.super-admin-user-is-voted p {
+    background-color: green;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.super-admin-user-wrapper button {
+    background-color: green;
+    border-radius: 5px;
+    border: none;
+    color: #ffffff;
+    padding: 5px;
+    font-weight: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.super-admin-user-wrapper button:hover {
+    color: green;
+    background-color: transparent;
+}
+
+.super-admin-user-navigation-buttons:hover {
+    transform: scale(1.2);
+    border: dotted 1px green;
+    border-radius: 5px;
+}
+
+.super-admin-user-photo-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100px;
+    border-radius: 50%;
+    border: dotted 5px green;
+    overflow: hidden;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.super-admin-user-photo-div img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    
+}
+.super-admin-user-details {
+    margin: auto;
+    max-width: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 5px 5px 15px green;
+}
+
+.super-admin-user-details-info {
+    display: flex;
+    column-gap: 10px;
+}
+
+.super-admin-user-details-info {
+    background-color: #e0e3e1;
+    margin: 2px;
+    text-transform: capitalize;
+}
+
+.super-admin-user-details-info p:first-child {
+    font-weight: bold;
+}
+
+
+@media screen and (max-width: 460px) {
+    .super-admin-user {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }   
+}
+
+@media screen and (max-width: 260px) {
+    .super-admin-user {
+        padding-top: 40px;
+    }   
+}
+
+@media screen and (max-width: 230px) {
+    .super-admin-user {
+        padding-top: 80px;
+    }   
+}

@@ -1,0 +1,153 @@
+.user {
+    width: 100%;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.user-wrapper {
+    width: 90%;
+    margin: 30px auto 60px auto;
+}
+
+.user-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.user-title p {
+    margin: 0;
+}
+
+.user-navigation {
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user-is-voted {
+    align-items: center;
+    justify-content: center;
+}
+
+.user-is-voted p {
+    background-color: green;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.user-navigation > button {
+    background-color: green;
+    border-radius: 5px;
+    border: none;
+    color: #ffffff;
+    padding: 5px;
+    font-weight: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.user-navigation > button:hover {
+    color: green;
+    background-color: transparent;
+}
+
+.user-navigation-buttons-div {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    border: dotted 1px gray;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 30px;
+}
+
+.user-navigation-buttons:hover {
+    transform: scale(1.2);
+    border: dotted 1px green;
+    border-radius: 5px;
+}
+
+.user-navigation-action {
+    background-color: green;
+    border-radius: 5px;
+    border: none;
+    color: #ffffff;
+    padding: 5px;
+    font-weight: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.user-navigation-action:hover {
+    background-color: #ffffff;
+    color: green;
+}
+
+.user-photo-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100px;
+    border-radius: 50%;
+    border: dotted 5px green;
+    overflow: hidden;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.user-photo-div img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    
+}
+.user-details {
+    margin: auto;
+    max-width: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 5px 5px 15px green;
+}
+
+.user-details-info {
+    display: flex;
+    column-gap: 10px;
+}
+
+.user-details-info {
+    background-color: #e0e3e1;
+    margin: 2px;
+    text-transform: capitalize;
+}
+
+.user-details-info p:first-child {
+    font-weight: bold;
+}
+
+
+@media screen and (max-width: 460px) {
+    .user {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }   
+}
+
+@media screen and (max-width: 260px) {
+    .user {
+        padding-top: 40px;
+    }   
+}
+
+@media screen and (max-width: 230px) {
+    .user {
+        padding-top: 80px;
+    }   
+}

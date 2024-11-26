@@ -1,0 +1,74 @@
+.vote-verification {
+    width: 100%;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.vote-verification-wrapper {
+    width: 90%;
+    margin: 30px auto 60px auto;
+    background-color: #BFFFBF;
+}
+
+.vote-verification-wrapper-inner {
+    position: relative;
+    width: 100%;
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+    background-color: #ffffff;
+}
+
+.vote-verification-voter-title {
+    display: flex;
+    position: absolute;
+    top: 0;
+}
+
+.vote-verification-voter-title > p {
+    font-weight: bold;
+}
+
+.vote-verification-voter {
+    display: flex;
+}
+
+.vote-verification-voter > p {
+    width: 100px;
+}
+
+.vote-verification-voter-title {
+    background-color: rgb(96, 158, 96);
+}
+
+.vote-verification-voter-title > p{
+    margin-right: 10px;
+    padding-left: 5px;
+}
+
+.vote-verification-map-div {
+    column-gap: 10px;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.vote-verification-map {
+    display: flex;
+    column-gap: 10px;
+}
+
+.vote-verification-map p:nth-child(1) {
+    border-left: solid 1px gray;
+    padding-left: 5px;
+}
+
+.vote-verification-map:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.vote-verification-map:nth-child(odd) {
+    background-color: #e0e3e1;
+}
+
+

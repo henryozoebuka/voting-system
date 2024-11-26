@@ -1,0 +1,164 @@
+.login {
+    width: 100%;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.login-wrapper {
+    width: 90%;
+    margin: 30px auto 60px auto;
+}
+
+.login-status {
+    top: 53px;
+    width: 90%;
+    margin: auto;
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.login-success-status {
+    width: fit-content;
+    background-color: rgb(0, 255, 0);
+}
+
+.login-failure-status {
+    width: fit-content;
+    background-color: pink;
+}
+
+.login-title {
+    width: 90%;
+    margin: 30px auto 0 auto;
+}
+
+.login-title>p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.login input[type='text'] {
+    width: 100%;
+    height: 20px;
+    margin-bottom: .5rem;
+}
+
+.login input[type='password'] {
+    width: 100%;
+    height: 20px;
+    margin-bottom: .5rem;
+}
+
+.login input[type='submit'] {
+    width: 102%;
+    border: none;
+    height: 30px;
+    background-color: green;
+    margin: 5px auto;
+    color: #ffffff;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.login select {
+    width: 102%;
+    height: 25px;
+    margin-bottom: .5rem;
+}
+
+.login-form-div {
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px green;
+    margin: auto;
+}
+
+.login-form-div form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.login-form-div form>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form-div form>div>div {
+    display: flex;
+}
+
+.login-gender-input {
+    border: 2px dotted #BFFFBF;
+    margin-bottom: .5rem;
+    width: 102%;
+}
+
+.login-gender-input>div {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    height: 20px;
+    padding: 0;
+}
+
+.login-create-user {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-create-user a {
+    text-decoration: none;
+    color: green;
+    border: 1px green dotted;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+.login-create-user a:hover {
+    color: #ffffff;
+    border: 1px #ffffff dotted;
+}
+
+
+@media screen and (max-width: 460px) {
+    .login {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
+    .login-status {
+        top: 70px;
+    }
+}
+
+@media screen and (max-width: 260px) {
+    .login {
+        padding-top: 40px;
+    }
+    
+    .login-status {
+        top: 100px;
+    }
+}
+
+@media screen and (max-width: 230px) {
+    .login {
+        padding-top: 50px;
+    }
+    .login-status {
+        top: 130px;
+    }
+}

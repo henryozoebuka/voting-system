@@ -1,0 +1,219 @@
+.users {
+    width: 100%;
+    background-color: #BFFFBF;
+    min-height: calc(100vh - 80px);
+    margin-top: 50px;
+    display: flex;
+}
+
+.users-wrapper {
+    width: 90%;
+    margin: 10px auto 60px auto;
+}
+
+.users-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: green;
+}
+
+.users-search {
+    width: 100%;
+}
+
+.users-search form {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.users-search form input[type='text'] {
+    width: 80%;
+    min-height: 30px;
+    border: none;
+}
+
+.users-search form input[type='text']:focus {
+    outline: dotted green 2px;
+}
+
+.users-search form input[type='submit'] {
+    width: 20%;
+    min-height: 30px;
+    background-color: green;
+    color: #ffffff;
+    border: none;
+}
+
+.users-search form input[type='submit']:hover {
+    color: green;
+    background-color: #ffffff;
+    border: dotted 2px green;
+    cursor: pointer;
+}
+
+.users-search-result {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 5px auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    height: fit-content;
+    width: 98%;
+    padding: 5px;
+}
+
+.users-search-result-title {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    height: fit-content;
+    width: 98%;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.users-search-result-title > p {
+    width: 30%;
+    margin: 0;
+}
+
+
+.users-search-result > p {
+    width: 30%;
+}
+
+.users-search-result > img {
+    width: 20%;
+}
+
+.users-show-users-list button {
+    width: 100%;
+    min-height: 30px;
+    background-color: green;
+    color: #ffffff;
+    border: none;
+}
+
+.users-show-users-list button:hover {
+    color: green;
+    background-color: #ffffff;
+    border: dotted 2px green;
+    cursor: pointer;
+}
+
+.users-user {
+    position: relative;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    margin: 5px auto;
+    border-radius: 10px;
+    background-color: #ffffff;
+    height: fit-content;
+    width: 98%;
+    padding: 5px;
+}
+
+.users-user-title {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    margin-top: 5px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    height: fit-content;
+    width: 98%;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.users-user-title > p {
+    width: 30%;
+    margin: 0;
+}
+
+
+.users-user > p {
+    width: 30%;
+}
+
+.users-user > img {
+    width: 20%;
+}
+
+.users-user:hover {
+    background-color: transparent;
+    border: dotted 2px green;
+}
+
+.users-user img {
+    width: 50px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.users-user button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: transparent;
+    border: none;
+}
+
+.users-user button:hover {
+    cursor: pointer;
+}
+
+.users-search-result:hover {
+    background-color: transparent;
+    border: dotted 2px green;
+}
+
+.users-search-result button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: transparent;
+    border: none;
+}
+
+.users-search-result button:hover {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 300px) {
+    .users-search form input[type='text'] {
+        width: 65%;
+    }
+    .users-search form input[type='submit'] {
+        width: 35%;
+    }
+}
+
+@media screen and (max-width: 458px) {
+    .users {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 260px) {
+    .users {
+        padding-top: 30px;
+    }   
+}
+
+@media screen and (max-width: 230px) {
+    .users {
+        padding-top: 50px;
+    }
+}
