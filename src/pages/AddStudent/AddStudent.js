@@ -147,7 +147,8 @@ const AddStudent = () => {
               <label htmlFor='department' >Department</label>
               <select name='department' value={userData.department} onChange={handleChange}>
                 <option value='' disabled>Select Department</option>
-                <option value='Archeology and Tourism'>Archeology and Tourism</option>
+                <option value='Archeology'>Archeology</option>
+                <option value='Combined Arts'>Combined Arts</option>
                 <option value='English and Literary Studies'>English and Literary Studies</option>
                 <option value='Fine and Applied Arts'>Fine and Applied Arts</option>
                 <option value='Foreign Languages and Literary Studies'>Foreign Languages and Literary Studies</option>
@@ -157,6 +158,8 @@ const AddStudent = () => {
                 <option value='Mass Communication'>Mass Communication</option>
                 <option value='Music'>Music</option>
                 <option value='Theatre and Film Studies'>Theatre and Film Studies</option>
+                <option value='Tourism and Heritage Studies'>Tourism and Heritage Studies</option>
+
               </select>
             </div>
 

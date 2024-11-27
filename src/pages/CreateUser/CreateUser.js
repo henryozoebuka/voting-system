@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import './CreateUser.css'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react';
+import './CreateUser.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 const CreateUser = () => {
   const { serverURL } = useSelector(state => state.serverURL);
@@ -21,6 +22,7 @@ const CreateUser = () => {
   });
 
 
+  const navigate = useNavigate();
   //handle change
   const handleChange = (e) => {
     if (e.target.name === 'photo') {
@@ -78,6 +80,7 @@ const CreateUser = () => {
         })
         setTimeout(() => {
           setSuccessStatus('');
+          navigate('/login');
         }, 3000);
       }
     } catch (error) {
@@ -185,6 +188,9 @@ const CreateUser = () => {
               <input type='submit' value={loading ? 'Submiting...' : 'Submit'} disabled={loading} style={{ backgroundColor: loading ? '#BFFFBF' : 'green' }} />
             </div>
           </form>
+        </div>
+        <div className='login-create-user'>
+          <p>Already have an account? <Link to={'/login'}>Login here.</Link></p>
         </div>
       </div >
     </div >

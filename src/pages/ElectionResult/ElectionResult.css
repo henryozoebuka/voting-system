@@ -3,8 +3,8 @@
     display: flex;
     flex-direction: column;
     background-color: #BFFFBF;
-    min-height: calc(100vh - 80px);
-    margin-top: 50px;
+    min-height: calc(100vh - 90px);
+    margin-top: 60px;
 }
 
 .election-result-wrapper {
@@ -96,6 +96,14 @@
     font-weight: bold;
 }
 
+@media screen and (max-width: 563px) {
+    .election-result {
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }   
+}
+
+
 @media screen and (max-width: 460px) {
     .election-result {
         padding-top: 20px;
@@ -103,9 +111,17 @@
     }   
 }
 
+
+@media screen and (max-width: 312px) {
+    .election-result {
+        padding-top: 45px;
+    }   
+}
+
+
 @media screen and (max-width: 260px) {
     .election-result {
-        padding-top: 40px;
+        padding-top: 80px;
     }   
 }
 

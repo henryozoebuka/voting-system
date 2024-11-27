@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './VoteVerification.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setVotes } from '../../redux/slices/votesSlice.js';
@@ -8,19 +8,23 @@ const VoteVerification = () => {
     const { serverURL } = useSelector(state => state.serverURL);
     const { votes } = useSelector(state => state.votes);
     const { students } = useSelector(state => state.students);
+    const [loading, setLoading] = useState();
     const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchVotes = async () => {
             try {
+                setLoading(true);
                 //handle fetch votes
-        const responseVotes = await axios.get(`${serverURL}/fetchVotes`);
-        if (responseVotes && responseVotes.status === 200) {
-          dispatch(setVotes(responseVotes.data));
-        }
+                const responseVotes = await axios.get(`${serverURL}/fetchVotes`);
+                if (responseVotes && responseVotes.status === 200) {
+                    dispatch(setVotes(responseVotes.data));
+                }
             } catch (error) {
-                    
-                  console.error('Something went wrong while logging in. ', error)
+
+                console.error('Something went wrong while logging in. ', error)
+            } finally {
+                setLoading(false);
             }
         }
         fetchVotes();
@@ -28,19 +32,23 @@ const VoteVerification = () => {
     return (
         <div className='vote-verification'>
             <div className='vote-verification-wrapper'>
+                {loading ? 
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+                    <p>Loading, please wait...</p>
+                </div> :
                 <div className='vote-verification-wrapper-inner'>
                     <div className='vote-verification-voter-title' >
-                        <p style={{ display: 'flex', minWidth: '100px', maxWidth: '100px',  }}>Voter No.</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>President</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Vice President</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Secretary General</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Assistant Secretary General</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Financial Secretary</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Treasurer</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Director of Socials</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Director of Games</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Director of Welfare</p>
-                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>Public Relation Officer</p>
+                        <p style={{ display: 'flex', minWidth: '100px', maxWidth: '100px', }}>Voter No.</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>President</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Vice President</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Secretary General</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Assistant Secretary General</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Financial Secretary</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Treasurer</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Director of Socials</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Director of Games</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Director of Welfare</p>
+                        <p style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>Public Relation Officer</p>
                     </div>
 
                     <div className='vote-verification-map-div'>
@@ -58,55 +66,55 @@ const VoteVerification = () => {
                                 const votedPublicRelationOfficer = students.find(student => student.regNo === voter.publicRelationOfficer);
                                 return <div className='vote-verification-map' key={voter.voterNumber || index}>
 
-                                    <p style={{ display: 'flex', minWidth: '100px', maxWidth: '100px',  }}>{voter.voterNumber}</p>
+                                    <p style={{ display: 'flex', minWidth: '100px', maxWidth: '100px', }}>{voter.voterNumber}</p>
                                     <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px' }}>
-                                        <p>{votedPresident ? votedPresident.firstname : 'No vote here'}</p>
-                                        <p>{votedPresident ? votedPresident.lastname : 'No vote here'}</p>
-                                    </div>
-
-                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px' }}>
-                                        <p>{votedVicePresident?.firstname}</p>
-                                        <p>{votedVicePresident?.lastname}</p>
+                                        <p>{votedPresident ? votedPresident.firstname : 'No'}</p>
+                                        <p>{votedPresident ? votedPresident.lastname : 'Vote'}</p>
                                     </div>
 
                                     <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px' }}>
-                                        <p>{votedSecretaryGeneral?.firstname}</p>
-                                        <p>{votedSecretaryGeneral?.lastname}</p>
+                                    <p>{votedVicePresident ? votedVicePresident.firstname : 'No'}</p>
+                                    <p>{votedVicePresident ? votedVicePresident.lastname : 'Vote'}</p>
                                     </div>
 
-                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>
-                                        <p>{votedAssistantSecretaryGeneral?.firstname}</p>
-                                        <p>{votedAssistantSecretaryGeneral?.lastname}</p>
-                                    </div>
-
-                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>
-                                        <p>{votedFinancialSecretary?.firstname}</p>
-                                        <p>{votedFinancialSecretary?.lastname}</p>
-                                    </div>
-
-                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>
-                                        <p>{votedTreasurer?.firstname}</p>
-                                        <p>{votedTreasurer?.lastname}</p>
-                                    </div>
-
-                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>
-                                        <p>{votedDirectorOfSocials?.firstname}</p>
-                                        <p>{votedDirectorOfSocials?.lastname}</p>
-                                    </div>
-
-                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px',  }}>
-                                        <p>{votedDirectorOfGames?.firstname}</p>
-                                        <p>{votedDirectorOfGames?.lastname}</p>
+                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px' }}>
+                                        <p>{votedSecretaryGeneral ? votedSecretaryGeneral.firstname : 'No'}</p>
+                                        <p>{votedSecretaryGeneral ? votedSecretaryGeneral.lastname : 'Vote'}</p>
                                     </div>
 
                                     <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
-                                        <p>{votedDirectorOfWelfare?.firstname}</p>
-                                        <p>{votedDirectorOfWelfare?.lastname}</p>
+                                        <p>{votedAssistantSecretaryGeneral ? votedAssistantSecretaryGeneral.firstname : 'No'}</p>
+                                        <p>{votedAssistantSecretaryGeneral ? votedAssistantSecretaryGeneral.lastname : 'Vote'}</p>
                                     </div>
 
                                     <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
-                                        <p>{votedPublicRelationOfficer?.firstname}</p>
-                                        <p>{votedPublicRelationOfficer?.lastname}</p>
+                                        <p>{votedFinancialSecretary ? votedFinancialSecretary.firstname: 'No'}</p>
+                                        <p>{votedFinancialSecretary ? votedFinancialSecretary.lastname : 'Vote'}</p>
+                                    </div>
+
+                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
+                                        <p>{votedTreasurer ? votedTreasurer.firstname : 'No'}</p>
+                                        <p>{votedTreasurer ? votedTreasurer.lastname : 'Vote'}</p>
+                                    </div>
+
+                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
+                                        <p>{votedDirectorOfSocials ? votedDirectorOfSocials.firstname : 'No'}</p>
+                                        <p>{votedDirectorOfSocials ? votedDirectorOfSocials.lastname : 'Vote'}</p>
+                                    </div>
+
+                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
+                                        <p>{votedDirectorOfGames ? votedDirectorOfGames.firstname : 'Vote'}</p>
+                                        <p>{votedDirectorOfGames ? votedDirectorOfGames.lastname : 'Vote'}</p>
+                                    </div>
+
+                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
+                                        <p>{votedDirectorOfWelfare ? votedDirectorOfWelfare.firstname : 'No'}</p>
+                                        <p>{votedDirectorOfWelfare ? votedDirectorOfWelfare.lastname : 'Vote'}</p>
+                                    </div>
+
+                                    <div style={{ display: 'flex', minWidth: '250px', maxWidth: '250px', }}>
+                                        <p>{votedPublicRelationOfficer ? votedPublicRelationOfficer.firstname : 'No'}</p>
+                                        <p>{votedPublicRelationOfficer ? votedPublicRelationOfficer.lastname : 'Vote'}</p>
                                     </div>
 
                                 </div>
@@ -115,6 +123,7 @@ const VoteVerification = () => {
                     </div>
 
                 </div>
+                }
             </div>
         </div>
     )

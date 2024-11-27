@@ -51,11 +51,13 @@
     column-gap: 10px;
     width: 100%;
     margin-top: 50px;
+    background-color: solid 2px green;
 }
 
 .vote-verification-map {
     display: flex;
     column-gap: 10px;
+    
 }
 
 .vote-verification-map p:nth-child(1) {
@@ -71,4 +73,30 @@
     background-color: #e0e3e1;
 }
 
+@media screen and (max-width: 565px) {
+    .vote-verification-wrapper {
+        margin-top: 40px;
+    }   
+}
 
+
+@media screen and (max-width: 460px) {
+    .vote-verification-wrapper {
+        margin-top: 30px;
+        margin-bottom: 80px;
+    }   
+}
+
+@media screen and (max-width: 311px) {
+    .vote-verification-wrapper {
+        margin-top: 60px;
+    }   
+}
+
+
+@media screen and (max-width: 248px) {
+    .vote-verification-wrapper {
+        margin-top: 90px;
+        margin-bottom: 90px;
+    }   
+}

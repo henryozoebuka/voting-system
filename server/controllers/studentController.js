@@ -27,7 +27,7 @@ const user = await StudentModel.create({
     role,
     voterNumber: nextVoterNumber,
     photo: req.file ? req.file.filename : null,
-});
+})
 
 
         if (user) {

@@ -28,7 +28,6 @@ const User = () => {
                     {actions && <div className='user-navigation-buttons-div'>
                         <button className='user-navigation-action' onClick={() => { navigate('/user') }}>My Profile</button>
                         {user && user.role === 'super admin' && <button className='user-navigation-action' onClick={() => { navigate('/users') }}>Users</button>}
-                        {user && user.role === 'super admin' && <button className='user-navigation-action' onClick={() => { navigate('/createuser') }}>Create User</button>}
                         {user && user.role === 'super admin' && <button className='user-navigation-action' onClick={() => { navigate('/electionresult') }}>Election Results</button>}
                         <button className='user-navigation-action' onClick={() => { navigate('/students') }}>Students</button>
                         <button className='user-navigation-action' onClick={() => { navigate('/addstudent') }}>Add Student</button>
