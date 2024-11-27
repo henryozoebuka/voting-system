@@ -35,7 +35,6 @@ const EditUser = () => {
     } else {
       setUserData({ ...userData, [e.target.name]: e.target.value });
     }
-    console.log(userData)
   }
 
   //handle submit

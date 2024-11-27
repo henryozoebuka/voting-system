@@ -28,7 +28,6 @@ const CreateUser = () => {
     } else {
       setUserData({ ...userData, [e.target.name]: e.target.value });
     }
-    console.log(userData)
   }
 
 

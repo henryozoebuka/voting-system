@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 
 //create user
 const createUser = async (req, res) => {
-    console.log(req.body)
     const { username, email, phoneNumber, password, firstname, lastname, gender, department, photo } = req.body;
     try {
         if (!username || !email || !phoneNumber || !password || !firstname || !lastname || !gender || !department ) {
@@ -29,7 +28,6 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
     const { username, password } = req.body;
     try {
-        console.log('Backfirst:', req.body);
         if (!username || !password) {
             return res.status(400).json({ message: 'All fields are required!' });
         }
@@ -71,7 +69,6 @@ const fetchUsers = async (req, res) => {
 
 //edit user
 const editUser = async (req, res) => {
-    console.log(req.file, req.body)
     const id = req.params.id
     try {
         const user = await UserModel.findByIdAndUpdate(id, {...req.body, photo: req.file ? req.file.filename : undefined});

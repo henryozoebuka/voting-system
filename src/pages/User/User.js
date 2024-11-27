@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './User.css';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { GrLinkPrevious } from "react-icons/gr";
 
 const User = () => {
 
@@ -17,17 +16,6 @@ const User = () => {
     }
 
     return (
-        // <div className='user'>
-        //   <div className='user-wrapper'>
-        //     <div className='user-photo-div'><img src={`${serverURL}/${user.photo}`} alt={user.username || user.regNo || 'nothing'} /></div>
-        //     <p>Username: {user.username && user.username}</p>
-        //     <p>Reg No: {user.regNo && user.regNo}</p>
-        //     <p>Firstname: {user.firstname}</p>
-        //     <p>Department: {user.department}</p>
-        //     <p>Year: {user.year}</p>
-        //     <p>Role: {user.role}</p>
-        //   </div>
-        // </div>
 
         <div className='user'>
             <div className='user-wrapper'>
@@ -35,7 +23,7 @@ const User = () => {
                     <p>My Profile</p>
                 </div>
                 <div className='user-navigation'>
-                    <GrLinkPrevious className='user-navigation-buttons' size={30} color='green' style={{ cursor: 'pointer' }} onClick={() => { navigate('/users') }} />
+            
                     <button className='user-navigation-buttons' onClick={toggleActions}>{actions ? 'Close Actions' : 'Actions'}</button>
                     {actions && <div className='user-navigation-buttons-div'>
                         <button className='user-navigation-action' onClick={() => { navigate('/user') }}>My Profile</button>

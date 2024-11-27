@@ -18,6 +18,20 @@
     color: green;
 }
 
+.users-my-profile button {
+    background-color: green;
+    color: #ffffff;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.users-my-profile button:hover {
+    background-color: transparent;
+    border: dotted 2px green;
+    cursor: pointer;
+}
 .users-search {
     width: 100%;
 }

@@ -34,7 +34,6 @@ const EditStudent = () => {
         } else {
             setStudentData({ ...studentData, [e.target.name]: e.target.value });
         }
-        console.log(studentData)
     }
     
     //handle submit
@@ -54,7 +53,6 @@ const EditStudent = () => {
                 } else {
                     formData.append(key, studentData[key]);
                 }
-                console.log('formdatas', formData)
             });
             
 

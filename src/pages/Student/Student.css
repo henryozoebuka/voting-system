@@ -102,8 +102,8 @@
 }
 
 .student-is-voted p {
-    background-color: green;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: green;
     font-weight: bold;
     padding: 2px 5px;
     border-radius: 5px;

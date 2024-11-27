@@ -22,7 +22,6 @@ const Students = () => {
   //handle search for student change
   const handleSearchStudentChange = (e) => {
     setSearch({ ...search, [e.target.name]: e.target.value });
-    console.log(search)
   }
 
   //Search for student
@@ -31,7 +30,6 @@ const Students = () => {
     const currentStudent = students.find(student => student.regNo.toLowerCase() === search.search.toLowerCase() || student.email.toLowerCase() === search.search.toLowerCase() || student.phoneNumber.toLowerCase() === search.search.toLowerCase() || student.firstname.toLowerCase() === search.search.toLowerCase());
     if (currentStudent) {
       setStudent(currentStudent);
-      console.log(currentStudent)
     } else {
       setStudent({}); // Clear student if not found
       setFailureStatus('Student not found.');
@@ -99,6 +97,9 @@ const Students = () => {
       <div className='students-wrapper'>
         <div className='students-title'>
           <p>Students</p>
+        </div>
+        <div className='students-my-profile'>
+          <button onClick={() => {navigate('/user')}}>My Profile</button>
         </div>
         <div className='students-search'>
           <form onSubmit={searchStudent}>

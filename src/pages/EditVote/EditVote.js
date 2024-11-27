@@ -52,7 +52,6 @@ const EditVote = () => {
     //handle change
     const handleChange = (e) => {
         setVote({ ...vote, [e.target.name]: e.target.value });
-        console.log(vote)
     }
 
     //handle submit
@@ -61,7 +60,6 @@ const EditVote = () => {
             e.preventDefault();
             const response = await axios.patch(`${serverURL}/editVote/${id}`, vote)
             if (response && response.status === 200) {
-                console.log(response.data)
                 setVoted(true)
                 setTimeout(() => {
                     navigate('/students')
@@ -69,7 +67,6 @@ const EditVote = () => {
             }
 
             if (response && response.status === 202) {
-                console.log(response.data)
                 setVoted(true)
                 setTimeout(() => {
                     navigate('/students')
@@ -84,7 +81,7 @@ const EditVote = () => {
                     }, 3000)
                 }
             }
-            console.log('Something went wrong while casting your vote. ', error)
+            console.error('Something went wrong while casting your vote. ', error)
         }
     }
 

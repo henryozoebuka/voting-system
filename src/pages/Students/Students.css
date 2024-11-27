@@ -151,6 +151,21 @@
     border: dotted 2px green;
 }
 
+.students-my-profile button {
+    background-color: green;
+    color: #ffffff;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.students-my-profile button:hover {
+    background-color: transparent;
+    border: dotted 2px green;
+    cursor: pointer;
+}
+
 .students-student img {
     width: 50px;
     aspect-ratio: 1/1;

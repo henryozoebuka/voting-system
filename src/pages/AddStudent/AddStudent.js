@@ -27,7 +27,6 @@ const AddStudent = () => {
     } else {
       setUserData({ ...userData, [e.target.name]: e.target.value });
     }
-    console.log(userData)
   }
 
   //handle submit
@@ -148,9 +147,15 @@ const AddStudent = () => {
               <label htmlFor='department' >Department</label>
               <select name='department' value={userData.department} onChange={handleChange}>
                 <option value='' disabled>Select Department</option>
-                <option value='Archeology'>Archeology</option>
+                <option value='Archeology and Tourism'>Archeology and Tourism</option>
+                <option value='English and Literary Studies'>English and Literary Studies</option>
                 <option value='Fine and Applied Arts'>Fine and Applied Arts</option>
-                <option value='Foreign Languages'>Foreign Languages</option>
+                <option value='Foreign Languages and Literary Studies'>Foreign Languages and Literary Studies</option>
+                <option value='History and International Studies'>History and International Studies</option>
+                <option value='Igbo and other Nigerian Languages'>Igbo and other Nigerian Languages</option>
+                <option value='Linguistics'>Linguistics</option>
+                <option value='Mass Communication'>Mass Communication</option>
+                <option value='Music'>Music</option>
                 <option value='Theatre and Film Studies'>Theatre and Film Studies</option>
               </select>
             </div>

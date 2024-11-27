@@ -70,12 +70,39 @@
     cursor: pointer;
 }
 
-.header-logout {
-    border: 2px dotted #ffffff;
-    border-radius: 2px;
-    cursor: pointer;
+.header-profile-logout-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    text-align: center;
+}
+
+.header-profile {
     color: green;
     background-color: #ffffff;
+    border: dotted 2px #ffffff;
+    border-radius: 5px;
+    margin: 0;
+}
+
+.header-profile:hover {
+    color: #ffffff;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.header-logout {
+    color: #ffffff;
+    background-color: transparent;
+    border: dotted 2px #ffffff;
+    border-radius: 5px;
+    margin: 0;
+}
+
+.header-logout:hover {
+    color: green;
+    background-color: #ffffff;
+    cursor: pointer;
 }
 
 

@@ -22,7 +22,6 @@ const Users = () => {
   //handle search for user change
   const handleSearchuserChange = (e) => {
     setSearch({ ...search, [e.target.name]: e.target.value });
-    console.log(search)
   }
 
   //Search for user
@@ -31,7 +30,6 @@ const Users = () => {
     const currentuser = users.find(user => user.username.toLowerCase() === search.search.toLowerCase() || user.email.toLowerCase() === search.search.toLowerCase() || user.phoneNumber.toLowerCase() === search.search.toLowerCase() || user.firstname.toLowerCase() === search.search.toLowerCase());
     if (currentuser) {
       setUser(currentuser);
-      console.log(currentuser)
     } else {
       setUser({}); // Clear user if not found
       setFailureStatus('user not found.');
@@ -101,6 +99,11 @@ const Users = () => {
         <div className='users-title'>
           <p>Users</p>
         </div>
+
+        <div className='users-my-profile'>
+          <button onClick={() => {navigate('/user')}}>My Profile</button>
+        </div>
+        
         <div className='users-search'>
           <form onSubmit={searchuser}>
             <input type='text' name='search' onChange={handleSearchuserChange} placeholder="Search for user's record" />

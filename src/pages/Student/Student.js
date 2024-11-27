@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './Student.css';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GrLinkPrevious } from "react-icons/gr";
 import axios from 'axios';
 
 const Student = () => {
@@ -71,10 +70,6 @@ const Student = () => {
         }
     }
 
-    useEffect(() => {
-        console.log(votes)
-    }, [isVoted, votes])
-
     return (
         <div className='student'>
             <div className='student-status'>
@@ -86,12 +81,12 @@ const Student = () => {
                     <p>Student Profile</p>
                 </div>
                 <div className='student-navigation'>
-                    <GrLinkPrevious className='student-navigation-buttons' size={30} color='green' style={{ cursor: 'pointer' }} onClick={() => { navigate('/students') }} />
-                    <div style={{ display: 'flex', columnGap: '5px' }}>
+                    
+                    <div style={{ display: 'flex', columnGap: '5px', justifyContent: 'center', margin: 'auto' }}>
                         {!isVoted && <button className='student-navigation-buttons' onClick={() => { navigate(`/vote/${student._id}`) }}>Vote Now</button>}
                         {user && user.role === 'super admin' && <button className='student-navigation-buttons' disabled={loading} onClick={() => { navigate(`/editstudent/${student._id}`) }}>Edit Student</button>}
                         {user && user.role === 'super admin' && <button className='student-navigation-buttons' disabled={loading} onClick={() => { navigate(`/editvote/${student._id}`) }}>Edit Vote</button>}
-                        {user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { navigate('/students') }}>Students</button>}
+                        {user && <button className='student-navigation-buttons' onClick={() => { navigate('/students') }}>Students</button>}
                         {user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { setDeleteAlert(true) }}>Delete Student</button>}
                         {user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { setDeleteVoteAlert(true) }}>Delete Student's Votes</button>}
                         {deleteAlert && <div className='student-delete-alert-div'>

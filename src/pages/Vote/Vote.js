@@ -69,7 +69,6 @@ const Vote = () => {
             e.preventDefault();
             const response = await axios.post(`${serverURL}/addVote`, vote)
             if (response && [201, 202].includes(response.status)) {
-                console.log(response.data);
                 setVoted(true);
                 setTimeout(() => {
                     navigate('/students');
@@ -85,7 +84,7 @@ const Vote = () => {
                     }, 3000)
                 }
             }
-            console.log('Something went wrong while casting your vote. ', error)
+            console.error('Something went wrong while casting your vote. ', error)
         }
     }
 
@@ -137,10 +136,6 @@ const Vote = () => {
             }));
         }
     }, [students, id]);
-
-    useEffect(() => {
-        console.log(vote);
-    }, [vote]);
     
 
     return (
