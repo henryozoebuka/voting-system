@@ -13,7 +13,7 @@ const Users = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState({});
-  const [user, setUser] = useState({});
+  const [searchUser, setSearchUser] = useState([]);
   const [showUsers, setShowUsers] = useState(false);
   const [failureStatus, setFailureStatus] = useState('');
 
@@ -27,11 +27,11 @@ const Users = () => {
   //Search for user
   const searchuser = (e) => {
     e.preventDefault();
-    const currentuser = users.find(user => user.username.toLowerCase() === search.search.toLowerCase() || user.email.toLowerCase() === search.search.toLowerCase() || user.phoneNumber.toLowerCase() === search.search.toLowerCase() || user.firstname.toLowerCase() === search.search.toLowerCase());
+    const currentuser = users.filter(user => user.username.toLowerCase() === search.search.toLowerCase() || user.email.toLowerCase() === search.search.toLowerCase() || user.phoneNumber.toLowerCase() === search.search.toLowerCase() || user.firstname.toLowerCase() === search.search.toLowerCase() || user.lastname.toLowerCase() === search.search.toLowerCase());
     if (currentuser) {
-      setUser(currentuser);
+      setSearchUser(currentuser);
     } else {
-      setUser({}); // Clear user if not found
+      setSearchUser([]); // Clear user if not found
       setFailureStatus('user not found.');
       setTimeout(() => setFailureStatus(''), 3000); // Clear failure message after 3 seconds
     }
@@ -47,7 +47,7 @@ const Users = () => {
 
   useEffect(() => {
     //fetch users
-    setUser({})
+    setSearchUser({})
     const fetchUsers = async () => {
       try {
         setLoading(true)
@@ -91,7 +91,7 @@ const Users = () => {
       }
     }
     fetchUsers();
-    
+
   }, [dispatch, serverURL])
   return (
     <div className='users'>
@@ -100,58 +100,58 @@ const Users = () => {
           <p>Users</p>
         </div>
 
-        <div className='users-my-profile'>
-          <button onClick={() => {navigate('/user')}}>My Profile</button>
-        </div>
-        
         <div className='users-search'>
           <form onSubmit={searchuser}>
             <input type='text' name='search' onChange={handleSearchuserChange} placeholder="Search for user's record" />
             <input type='submit' value={'Search'} />
           </form>
-          
-          {user && user.firstname &&
-          <div className='users-search-result-title'>
-            <p>Username</p>
-            <p>Firstname</p>
-            <p>Surname</p>
-          </div>}
-          {user && user.firstname && <div className='users-search-result'>
-            {/* <img src={`${serverURL}/${user.photo}`} alt={user.firstname || user.username || 'nothing'} /> */}
-            <p>{user.username && user.username}</p>
-            <p>{user.firstname}</p>
-            <p>{user.lastname}</p>
-            <button onClick={() => { navigate(`/user/${user._id}`) }} ></button>
-          </div>
+
+          {searchUser && searchUser.length &&
+            <div className='users-search-result-title'>
+              <p>Username</p>
+              <p>Firstname</p>
+              <p>Surname</p>
+            </div>}
+          {searchUser && searchUser.length &&
+            searchUser.map((item, index) => (
+              <div key={item._id || index} className='users-search-result'>
+                <p>{item.username && item.username}</p>
+                <p>{item.firstname}</p>
+                <p>{item.lastname}</p>
+                <button onClick={() => { navigate(`/superAdminUser/${item._id}`) }} ></button>
+              </div>
+            ))
           }
+
         </div>
         <div className='users-show-users-list'>
           <button onClick={() => { toggleuserList(); }}>{showUsers ? 'Collapse Users List' : 'Show Users List'}</button>
         </div>
         {showUsers && users.length &&
-        <div className='users-user-title'>
+          <div className='users-user-title'>
             <p>Username</p>
             <p>Firstname</p>
             <p>Surname</p>
           </div>}
         {failureStatus && <div className="error-message">{failureStatus}</div>}
-        {loading ? (
-          <div>Loading, please wait...</div>
-        ) : (
-          showUsers && users.length ? (
-            users.map((user, index) => (
-              <div key={user._id || index} className='users-user'>
-                {/* <img src={`${serverURL}/${user.photo}`} alt={user.firstname || user.username || 'nothing'} /> */}
-                <p>{user.username}</p>
-                <p>{user.firstname}</p>
-                <p>{user.lastname}</p>
-                <button onClick={() => { navigate(`/superadminuser/${user._id}`); }}></button>
-              </div>
-            ))
+        <div style={{ overflowX: 'scroll', height: '60vh' }}>
+          {loading ? (
+            <div>Loading, please wait...</div>
           ) : (
-            null
-          )
-        )}
+            showUsers && users.length ? (
+              users.slice().sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).map((user, index) => (
+                <div key={user._id || index} className='users-user'>
+                  <p>{user.username}</p>
+                  <p>{user.firstname}</p>
+                  <p>{user.lastname}</p>
+                  <button onClick={() => { navigate(`/superadminuser/${user._id}`); }}></button>
+                </div>
+              ))
+            ) : (
+              null
+            )
+          )}
+        </div>
 
 
       </div></div>

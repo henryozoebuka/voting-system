@@ -56,6 +56,7 @@
 .students-search-result {
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
     margin: 5px auto;
     border-radius: 10px;
@@ -64,6 +65,12 @@
     width: 98%;
     padding: 5px;
 }
+
+.students-search-result > p {
+    width: 30%;
+    margin: 0;
+}
+
 
 .students-search-result-title {
     display: flex;
@@ -119,8 +126,10 @@
     padding: 5px;
 }
 
+
 .students-student-title {
     display: flex;
+    justify-content: center;
     align-items: center;
     margin: auto;
     margin-top: 5px;
@@ -205,9 +214,18 @@
     cursor: pointer;
 }
 
+.p1 {
+    display: none;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 460px) {
     .students-search-result {
         flex-direction: column;
+    }
+
+    .p1 {
+        display: flex;
     }
 }
 

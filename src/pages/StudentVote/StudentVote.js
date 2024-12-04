@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import './EditVote.css';
+import './StudentVote.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import {setStudents} from '../../redux/slices/studentsSlice.js'
 import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 
 
-const EditVote = () => {
+const StudentVote = () => {
 
     const { serverURL } = useSelector(state => state.serverURL);
     const { students } = useSelector(state => state.students);
-    const { votes } = useSelector(state => state.votes);
     const { id } = useParams();
     const [slide, setSlide] = useState(0);
+    const [loading, setLoading] = useState(false)
     const [voted, setVoted] = useState(false);
-    const [loading, setLoading] =useState(false);
     const [failureStatus, setFailureStatus] = useState('');
     const [verify, setVerify] = useState({
         president: null,
         vicePresident: null,
-        generalSecretary: null,
+        secretaryGeneral: null,
         assistantSecretaryGeneral: null,
         financialSecretary: null,
         treasurer: null,
@@ -30,12 +30,23 @@ const EditVote = () => {
     });
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const filterCurrentStudent = students.find(student => student._id === id);
-    const [vote, setVote] = useState({});
-
-    //fetch student votes
-    const filteredVote = votes.find(vote => vote.studentId === id);
+    // const filterCurrentStudent = students.find(student => student._id === id);
+    const [vote, setVote] = useState({
+        studentId: id,
+          voterNumber: '',
+          president: '',
+          vicePresident: '',
+          secretaryGeneral: '',
+          assistantSecretaryGeneral: '',
+          financialSecretary: '',
+          treasurer: '',
+          directorOfSocials: '',
+          directorOfGames: '',
+          directorOfWelfare: '',
+          publicRelationOfficer: '',
+    });
 
     const filterPresidents = students.filter(contestants => contestants.role === 'president');
     const filterVicePresidents = students.filter(contestants => contestants.role === 'vice president');
@@ -60,23 +71,18 @@ const EditVote = () => {
         try {
             e.preventDefault();
             setLoading(true);
-            const response = await axios.patch(`${serverURL}/editVote/${id}`, vote)
-            if (response && response.status === 200) {
-                setVoted(true)
+            const response = await axios.post(`${serverURL}/addVote`, vote)
+            if (response && [201, 202].includes(response.status)) {
+                window.scrollTo(0, 0);
+                setVoted(true);
                 setTimeout(() => {
-                    navigate('/students')
-                }, 3000)
+                    navigate('/voter');
+                }, 3000);
             }
-
-            if (response && response.status === 202) {
-                setVoted(true)
-                setTimeout(() => {
-                    navigate('/students')
-                }, 3000)
-            }
+            
         } catch (error) {
             if (error.response) {
-                if (error.response.status === 404) {
+                if (error.response.status === 400) {
                     setFailureStatus(error.response.data.message);
                     setTimeout(() => {
                         setFailureStatus('');
@@ -91,7 +97,7 @@ const EditVote = () => {
 
     //next button
     const nextButton = () => {
-        if (slide < uniqueCategory.length - 2) {
+        if (slide < uniqueCategory.length - 1) {
             setSlide(slide + 1)
         }
     }
@@ -104,6 +110,20 @@ const EditVote = () => {
     }
 
     useEffect(() => {
+        //fetch students
+        const fetchStudents = async () => {
+            try {
+                const response = await axios.get(`${serverURL}/fetchStudents`);
+                if (response && response.status === 200) {
+                    dispatch(dispatch(setStudents(response.data)));
+                }
+            } catch (error) {
+                console.error('Something went wrong while fetching votes (front). ', error)
+            }
+        }
+
+        fetchStudents();
+
         const findSelectedPresident = students.find(student => student.regNo === vote.president);
         const findSelectedVicePresident = students.find(student => student.regNo === vote.vicePresident);
         const findSelectedSecretaryGeneral = students.find(student => student.regNo === vote.secretaryGeneral);
@@ -126,30 +146,18 @@ const EditVote = () => {
             directorOfWelfare: findSelectedDirectorOfWelfare,
             publicRelationOfficer: findSelectedPublicRelationOfficer,
         });
-    }, [students, vote]);
-
+    }, [students, vote, dispatch, serverURL]);
+    
     useEffect(() => {
-      const fetchVote = () => {
-        setVote({
-          studentId: id,
-          voterNumber: filterCurrentStudent?.voterNumber,
-          president: filteredVote?.president || '',
-          vicePresident: filteredVote?.vicePresident || '',
-          secretaryGeneral: filteredVote?.secretaryGeneral || '',
-          assistantSecretaryGeneral: filteredVote?.assistantSecretaryGeneral || '',
-          financialSecretary: filteredVote?.financialSecretary || '',
-          treasurer: filteredVote?.treasurer || '',
-          directorOfSocials: filteredVote?.directorOfSocials || '',
-          directorOfGames: filteredVote?.directorOfGames || '',
-          directorOfWelfare: filteredVote?.directorOfWelfare || '',
-          publicRelationOfficer: filteredVote?.publicRelationOfficer || '',
-        });
-      }
+        const currentStudent = students.find(student => student._id === id);
+        if (currentStudent) {
+            setVote(prevState => ({
+                ...prevState,
+                voterNumber: currentStudent.voterNumber,
+            }));
+        }
+    }, [students, id]);
     
-      fetchVote();
-    }, [filteredVote, id, filterCurrentStudent]); // Adding dependencies for the effect
-    
-
 
     return (
         <div className='vote'>
@@ -174,7 +182,7 @@ const EditVote = () => {
                                             filterPresidents.map((president, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={president._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' value={president.regNo} name='president' checked={vote.president === president.regNo} onChange={handleChange} />
+                                                    <input type='radio' value={president.regNo} name='president' onChange={handleChange} />
                                                     <p>{president.firstname}</p>
                                                     <p>{president.lastname}</p>
                                                 </div>
@@ -197,7 +205,7 @@ const EditVote = () => {
                                             filterVicePresidents.map((vicePresident, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={vicePresident._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' value={vicePresident.regNo} name='vicePresident' checked={vote.vicePresident === vicePresident.regNo} onChange={handleChange} />
+                                                    <input type='radio' value={vicePresident.regNo} name='vicePresident' onChange={handleChange} />
                                                     <p>{vicePresident.firstname}</p>
                                                     <p>{vicePresident.lastname}</p>
                                                 </div>
@@ -209,19 +217,19 @@ const EditVote = () => {
                             }
 
 
-                            {
+{
                                 filterSecretaryGenerals && filterSecretaryGenerals.length ?
                                     <div className='vote-category-section'>
-
-                                        <div className='vote-category-title'>
-                                            <p>Secretary General</p>
-                                        </div>
-
+                                        {
+                                            filterSecretaryGenerals && filterSecretaryGenerals.length ? <div className='vote-category-title'>
+                                                <p>Secretary General</p>
+                                            </div> : null
+                                        }
                                         {filterSecretaryGenerals && filterSecretaryGenerals.length ?
                                             filterSecretaryGenerals.map((secretaryGeneral, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={secretaryGeneral._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.secretaryGeneral === secretaryGeneral.regNo} value={secretaryGeneral.regNo} name='secretaryGeneral' onChange={handleChange} />
+                                                    <input type='radio' value={secretaryGeneral.regNo} name='secretaryGeneral' onChange={handleChange} />
                                                     <p>{secretaryGeneral.firstname}</p>
                                                     <p>{secretaryGeneral.lastname}</p>
                                                 </div>
@@ -245,7 +253,7 @@ const EditVote = () => {
                                             filterAssistantSecretaryGenerals.map((assistantSecretaryGeneral, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={assistantSecretaryGeneral._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.assistantSecretaryGeneral === assistantSecretaryGeneral.regNo} value={assistantSecretaryGeneral.regNo} name='assistantSecretaryGeneral' onChange={handleChange} />
+                                                    <input type='radio' value={assistantSecretaryGeneral.regNo} name='assistantSecretaryGeneral' onChange={handleChange} />
                                                     <p>{assistantSecretaryGeneral.firstname}</p>
                                                     <p>{assistantSecretaryGeneral.lastname}</p>
                                                 </div>
@@ -269,7 +277,7 @@ const EditVote = () => {
                                             filterFinancialSecretaries.map((financialSecretary, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={financialSecretary._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.financialSecretary === financialSecretary.regNo} value={financialSecretary.regNo} name='financialSecretary' onChange={handleChange} />
+                                                    <input type='radio' value={financialSecretary.regNo} name='financialSecretary' onChange={handleChange} />
                                                     <p>{financialSecretary.firstname}</p>
                                                     <p>{financialSecretary.lastname}</p>
                                                 </div>
@@ -293,7 +301,7 @@ const EditVote = () => {
                                             filterTreasurers.map((treasurer, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={treasurer._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.treasurer === treasurer.regNo} value={treasurer.regNo} name='treasurer' onChange={handleChange} />
+                                                    <input type='radio' value={treasurer.regNo} name='treasurer' onChange={handleChange} />
                                                     <p>{treasurer.firstname}</p>
                                                     <p>{treasurer.lastname}</p>
                                                 </div>
@@ -316,7 +324,7 @@ const EditVote = () => {
                                             filterDirectorOfSocials.map((directorOfSocials, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={directorOfSocials._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.directorOfSocials === directorOfSocials.regNo} value={directorOfSocials.regNo} name='directorOfSocials' onChange={handleChange} />
+                                                    <input type='radio' value={directorOfSocials.regNo} name='directorOfSocials' onChange={handleChange} />
                                                     <p>{directorOfSocials.firstname}</p>
                                                     <p>{directorOfSocials.lastname}</p>
                                                 </div>
@@ -340,7 +348,7 @@ const EditVote = () => {
                                             filterDirectorOfGames.map((directorOfGames, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={directorOfGames._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.directorOfGames === directorOfGames.regNo} value={directorOfGames.regNo} name='directorOfGames' onChange={handleChange} />
+                                                    <input type='radio' value={directorOfGames.regNo} name='directorOfGames' onChange={handleChange} />
                                                     <p>{directorOfGames.firstname}</p>
                                                     <p>{directorOfGames.lastname}</p>
                                                 </div>
@@ -364,7 +372,7 @@ const EditVote = () => {
                                             filterDirectorOfWelfare.map((directorOfWelfare, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={directorOfWelfare._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.directorOfWelfare === directorOfWelfare.regNo} value={directorOfWelfare.regNo} name='directorOfWelfare' onChange={handleChange} />
+                                                    <input type='radio' value={directorOfWelfare.regNo} name='directorOfWelfare' onChange={handleChange} />
                                                     <p>{directorOfWelfare.firstname}</p>
                                                     <p>{directorOfWelfare.lastname}</p>
                                                 </div>
@@ -388,7 +396,7 @@ const EditVote = () => {
                                             filterPublicRelationOfficers.map((publicRelationOfficer, index) => (
                                                 <label style={{ cursor: 'pointer' }}>
                                                 <div key={publicRelationOfficer._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' checked={vote.publicRelationOfficer === publicRelationOfficer.regNo} value={publicRelationOfficer.regNo} name='publicRelationOfficer' onChange={handleChange} />
+                                                    <input type='radio' value={publicRelationOfficer.regNo} name='publicRelationOfficer' onChange={handleChange} />
                                                     <p>{publicRelationOfficer.firstname}</p>
                                                     <p>{publicRelationOfficer.lastname}</p>
                                                 </div>
@@ -487,4 +495,4 @@ const EditVote = () => {
     )
 }
 
-export default EditVote;
+export default StudentVote;

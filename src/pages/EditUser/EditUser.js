@@ -7,6 +7,7 @@ const EditUser = () => {
   const { serverURL } = useSelector(state => state.serverURL);
   const { user } = useSelector(state => state.user);
   const { users } = useSelector(state => state.users);
+  const [previewPhoto, setPreviewPhoto] = useState(null)
   const [loading, setLoading] = useState(false);
   const [successStatus, setSuccessStatus] = useState('');
   const [failureStatus, setFailureStatus] = useState('');
@@ -16,13 +17,12 @@ const EditUser = () => {
     email: '',
     phoneNumber: '',
     gender: '',
-    department: '',
     role: '',
     photo: null,
   });
 
   const params = useParams();
-    const id = params.id;
+  const id = params.id;
 
   //filter user
   const filteredUser = users.find(user => user._id === id);
@@ -32,8 +32,13 @@ const EditUser = () => {
   const handleChange = (e) => {
     if (e.target.name === 'photo') {
       setUserData({ ...userData, [e.target.name]: e.target.files[0] });
+      setPreviewPhoto(URL.createObjectURL(e.target.files[0]))
     } else {
-      setUserData({ ...userData, [e.target.name]: e.target.value });
+      let value = e.target.value;
+      if (e.target.name === 'username' || e.target.name === 'email') {
+        value = e.target.value.toLowerCase();
+      }
+      setUserData({ ...userData, [e.target.name]: value });
     }
   }
 
@@ -62,6 +67,7 @@ const EditUser = () => {
       });
 
       if (response && response.status === 200) {
+        window.scrollTo(0, 0);
         setSuccessStatus(response.data.message);
         setTimeout(() => {
           setSuccessStatus('');
@@ -83,28 +89,31 @@ const EditUser = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
+  useEffect(() => {
     const fetchUser = () => {
-        setUserData({
-            firstname: filteredUser.firstname,
-            lastname: filteredUser.lastname,
-            email: filteredUser.email,
-            phoneNumber: filteredUser.phoneNumber,
-            gender: filteredUser.gender,
-            department: filteredUser.department,
-            year: filteredUser.year,
-            role: filteredUser.role,
-            photo: filteredUser.photo,
-        });
+      setUserData({
+        firstname: filteredUser.firstname,
+        lastname: filteredUser.lastname,
+        email: filteredUser.email,
+        phoneNumber: filteredUser.phoneNumber,
+        gender: filteredUser.gender,
+        role: filteredUser.role,
+        photo: filteredUser.photo,
+      });
     }
     fetchUser();
 
-}, [filteredUser]);
+  }, [filteredUser]);
 
 
   return (
     <div className='create-user'>
       <div className='create-user-status'>
         {successStatus && <div className='create-user-success-status'>{successStatus}</div>}
+        {loading && <div className='create-user-success-status'>Loading, please wait...</div>}
         {failureStatus && <div className='create-user-failure-status'>{failureStatus}</div>}
       </div>
 
@@ -120,7 +129,7 @@ const EditUser = () => {
             </div>
 
             <div className='create-user-lastname-input'>
-              <label htmlFor='firstname'>Lastname</label>
+              <label htmlFor='lastname'>Surname</label>
               <input type='text' value={userData.lastname} name='lastname' onChange={handleChange} />
             </div>
 
@@ -146,27 +155,25 @@ const EditUser = () => {
               </div>
             </div>
 
-            <div className='create-user-department-input'>
-              <label htmlFor='department' >Department</label>
-              <select name='department' value={userData.department} onChange={handleChange}>
-                <option value='' disabled>Select Department</option>
-                <option value='Archeology'>Archeology</option>
-                <option value='Fine and Applied Arts'>Fine and Applied Arts</option>
-                <option value='Foreign Languages'>Foreign Languages</option>
-                <option value='Theatre and Film Studies'>Theatre and Film Studies</option>
-              </select>
-            </div>
-
             {user && user.role === 'super admin' &&
               <div className='create-user-role-input'>
-              <label htmlFor='role' >Role</label>
-              <select name='role' value={userData.role} onChange={handleChange}>
-                <option value='' disabled>Select Role</option>
-                <option value=''>Deactivate</option>
-                <option value='super admin'>Super Admin</option>
-                <option value='admin'>Admin</option>
-              </select>
-            </div>}
+                <label htmlFor='role' >Role</label>
+                <select name='role' value={userData.role} onChange={handleChange}>
+                  <option value='' disabled>Select Role</option>
+                  <option value=''>Deactivate</option>
+                  <option value='super admin'>Super Admin</option>
+                  <option value='admin'>Admin</option>
+                </select>
+              </div>}
+
+            {previewPhoto ?
+              <div className='create-user-photo-input' style={{ width: '100%' }}>
+                <img src={previewPhoto} alt={userData.firstname} style={{ width: '100px', height: '100px', margin: 'auto' }} />
+              </div> :
+              <div className='create-user-photo-input' style={{ width: '100%' }}>
+                <img src={userData.photo} alt={userData.firstname} style={{ width: '100px', height: '100px', margin: 'auto' }} />
+              </div>
+            }
 
             <div className='create-user-photo-input'>
               <label htmlFor='photo' >Photo</label>

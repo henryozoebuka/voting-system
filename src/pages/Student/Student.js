@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import './Student.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { setCheck } from '../../redux/slices/checkSlice.js';
 import axios from 'axios';
 
 const Student = () => {
 
     const { serverURL } = useSelector(state => state.serverURL);
     const { user } = useSelector(state => state.user);
+    const { check } = useSelector(state => state.check);
     const { students } = useSelector(state => state.students);
     const { votes } = useSelector(state => state.votes);
     const { id } = useParams();
@@ -19,6 +21,7 @@ const Student = () => {
     
     const student = students.find(currentStudent => currentStudent._id === id);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const isVoted = Array.isArray(votes) && votes.some(vote => vote.studentId === student._id);
 
@@ -70,6 +73,7 @@ const Student = () => {
         }
     }
 
+    
     return (
         <div className='student'>
             <div className='student-status'>
@@ -83,18 +87,18 @@ const Student = () => {
                 <div className='student-navigation'>
                     
                     <div style={{ display: 'flex', columnGap: '5px', justifyContent: 'center', margin: 'auto' }}>
-                        {!isVoted && <button className='student-navigation-buttons' onClick={() => { navigate(`/vote/${student._id}`) }}>Vote Now</button>}
-                        {user && user.role === 'super admin' && <button className='student-navigation-buttons' disabled={loading} onClick={() => { navigate(`/editstudent/${student._id}`) }}>Edit Student</button>}
-                        {user && user.role === 'super admin' && <button className='student-navigation-buttons' disabled={loading} onClick={() => { navigate(`/editvote/${student._id}`) }}>Edit Vote</button>}
-                        {user && <button className='student-navigation-buttons' onClick={() => { navigate('/students') }}>Students</button>}
+                        {user && user.role === 'super admin' && !isVoted && <button className='student-navigation-buttons' onClick={() => { navigate(`/vote/${student._id}`) }}>Vote Now</button>}
+                        {user && user.role === 'super admin' && <button className='student-navigation-buttons' disabled={loading} onClick={() => { navigate(`/editstudent/${student._id}`) }}>Edit Student</button>}                        
+                        {user && user.role === 'super admin' && user.role === 'admin' && <button className='student-navigation-buttons' onClick={() => { navigate('/students') }}>Students</button>}
                         {user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { setDeleteAlert(true) }}>Delete Student</button>}
-                        {user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { setDeleteVoteAlert(true) }}>Delete Student's Votes</button>}
+                        {check && user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { setDeleteVoteAlert(true) }}>Delete Student's Votes</button>}
+                        {check && user && user.role === 'super admin' && <button className='student-navigation-buttons' onClick={() => { navigate(`/editvote/${student._id}`) }}>Edit Vote</button>}
                         {deleteAlert && <div className='student-delete-alert-div'>
                             <div className='student-delete-alert'>
-                                <p>Are you sure you want to delete {student.firstname} {student.lastname}'s account?</p>
+                                <p>Are you sure you want to delete <span style={{fontWeight: 'bold'}}>{student.firstname} {student.lastname}'s</span> account?</p>
                                 <div className='student-delete-alert-button-div'>
                                     <button disabled={loading} onClick={() => { deleteStudent(student._id) }}>{loading ? 'Deleting Student...' : 'Yes'}</button>
-                                    <button onClick={() => { setDeleteAlert(false) }}>Cancel</button>
+                                    <button onClick={() => { setDeleteAlert(false) }}>No</button>
                                 </div>
                             </div>
                         </div>}
@@ -113,12 +117,12 @@ const Student = () => {
                     <p>This student has voted</p>
                 </div>
                 <div className='student-photo-div'>
-                    <img src={`${serverURL}/${student.photo}`} alt={student.firstname} />
+                    <img src={student.photo} alt={student.firstname} />
                 </div>
                 <div className='student-details'>
                     <div className='student-details-info'>
                         <p>Reg. Number: </p>
-                        <p>{student.regNo}</p>
+                        <p style={{textTransform: 'lowercase'}}>{student.regNo}</p>
                     </div>
                     <div className='student-details-info'>
                         <p>Firstname: </p>
@@ -129,9 +133,13 @@ const Student = () => {
                         <p>{student.lastname}</p>
                     </div>
                     <div className='student-details-info'>
-                        <p>Voter's Number: </p>
-                        <p>{student.voterNumber}</p>
+                        <p>Email: </p>
+                        <p style={{textTransform: 'lowercase'}}>{student.email}</p>
                     </div>
+                    {/* <div className='student-details-info'>
+                        <p>Voter Secret: </p>
+                        <p>{student.voterNumber}</p>
+                    </div> */}
                     <div className='student-details-info'>
                         <p>Role: </p>
                         <p>{student.role}</p>
@@ -139,6 +147,7 @@ const Student = () => {
 
                 </div>
             </div>
+            {user && user.role === 'super admin' && <button onClick={() => {dispatch(setCheck())}} style={{position: 'absolute', bottom: 0, right: 0, backgroundColor: 'green', color: 'white', border: 'none', cursor: 'pointer'}}>{check ? 'Hide' : 'Check'}</button>}
         </div>
     );
 }

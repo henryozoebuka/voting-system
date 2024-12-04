@@ -9,11 +9,12 @@ import { useNavigate } from 'react-router-dom';
 const Students = () => {
 
   const { serverURL } = useSelector(state => state.serverURL || {});
+  const { votes } = useSelector(state => state.votes || []);
   const { students } = useSelector(state => state.students || {});
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState({});
-  const [student, setStudent] = useState({});
+  const [student, setStudent] = useState([]);
   const [showStudents, setShowStudents] = useState(false);
   const [failureStatus, setFailureStatus] = useState('');
 
@@ -27,15 +28,14 @@ const Students = () => {
   //Search for student
   const searchStudent = (e) => {
     e.preventDefault();
-    const currentStudent = students.find(student => student.regNo.toLowerCase() === search.search.toLowerCase() || student.email.toLowerCase() === search.search.toLowerCase() || student.phoneNumber.toLowerCase() === search.search.toLowerCase() || student.firstname.toLowerCase() === search.search.toLowerCase());
+    const currentStudent = students.filter(student => student.regNo.toLowerCase() === search.search.toLowerCase() || student.email.toLowerCase() === search.search.toLowerCase() || student.phoneNumber.toLowerCase() === search.search.toLowerCase() || student.firstname.toLowerCase() === search.search.toLowerCase() || student.lastname.toLowerCase() === search.search.toLowerCase());
     if (currentStudent) {
       setStudent(currentStudent);
     } else {
-      setStudent({}); // Clear student if not found
+      setStudent([]); // Clear student if not found
       setFailureStatus('Student not found.');
       setTimeout(() => setFailureStatus(''), 3000); // Clear failure message after 3 seconds
     }
-
   }
 
 
@@ -98,57 +98,63 @@ const Students = () => {
         <div className='students-title'>
           <p>Students</p>
         </div>
-        <div className='students-my-profile'>
-          <button onClick={() => {navigate('/user')}}>My Profile</button>
-        </div>
         <div className='students-search'>
           <form onSubmit={searchStudent}>
             <input type='text' name='search' onChange={handleSearchStudentChange} placeholder="Search for student's record" />
             <input type='submit' value={'Search'} />
           </form>
+
+          {student && student.length ?
+            <div className='students-search-result-title'>
+              <p>Reg. Number</p>
+              <p>Firstname</p>
+              <p>Surname</p>
+            </div> : null}
+
+
+          {student && student.length ?
+            student.map((item, index) => {
+              const isVoted = Array.isArray(votes) && votes.some(vote => vote.studentId === item._id);
+              return <div key={item._id || index} className='students-search-result'>
+                <p>{item.regNo && item.regNo}</p>
+                <p>{item.firstname}</p>
+                <p>{item.lastname}</p>
+                <button onClick={() => { navigate(`/student/${item._id}`) }} style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.5rem', backgroundColor: isVoted && 'rgba(0, 0, 0, 0.5)', borderRadius: '10px' }} >{isVoted && 'Voted'}</button>
+              </div>
+
+            }) :
+            null}
           
-          {student && student.firstname &&
-          <div className='students-search-result-title'>
-            <p>Reg. Number</p>
-            <p>Firstname</p>
-            <p>Surname</p>
-          </div>}
-          {student && student.firstname && <div className='students-search-result'>
-            {/* <img src={`${serverURL}/${student.photo}`} alt={student.firstname || student.regNo || 'nothing'} /> */}
-            <p>{student.regNo && student.regNo}</p>
-            <p>{student.firstname}</p>
-            <p>{student.lastname}</p>
-            <button onClick={() => { navigate(`/student/${student._id}`) }} ></button>
-          </div>
-          }
         </div>
         <div className='students-show-students-list'>
           <button onClick={() => { toggleStudentList(); }}>{showStudents ? 'Collapse Student List' : 'Show Students List'}</button>
         </div>
+        {failureStatus && <div className="error-message">{failureStatus}</div>}
         {showStudents && students.length &&
-        <div className='students-student-title'>
+          <div className='students-student-title'>
             <p>Reg. Number</p>
             <p>Firstname</p>
             <p>Surname</p>
           </div>}
-        {failureStatus && <div className="error-message">{failureStatus}</div>}
+          <div style={{overflowX: 'scroll', height: '60vh'}}>
         {loading ? (
           <div>Loading, please wait...</div>
         ) : (
-          showStudents && students.length ? (
-            students.map((student, index) => (
-              <div key={student._id || index} className='students-student'>
-                {/* <img src={`${serverURL}/${student.photo}`} alt={student.firstname || student.regNo || 'nothing'} /> */}
-                <p>{student.regNo}</p>
-                <p>{student.firstname}</p>
-                <p>{student.lastname}</p>
-                <button onClick={() => { navigate(`/student/${student._id}`); }}></button>
-              </div>
-            ))
-          ) : (
-            null
-          )
+          showStudents && students.length ? 
+          
+          students.slice().sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).map((item, index) => {
+            const isVoted = Array.isArray(votes) && votes.some(vote => vote.studentId === item._id);
+            return <div key={item._id || index} className='students-search-result'>
+              <p>{item.regNo && item.regNo}</p>
+              <p>{item.firstname}</p>
+              <p>{item.lastname}</p>
+              <button onClick={() => { navigate(`/student/${item._id}`) }} style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.5rem', color: 'rgba(0, 0, 0, 0.2)', backgroundColor: isVoted && 'rgba(0, 0, 0, 0.2)', borderRadius: '10px' }} >{isVoted && 'Voted'}</button>
+            </div>
+
+          }) :
+          null
         )}
+        </div>
 
 
       </div></div>

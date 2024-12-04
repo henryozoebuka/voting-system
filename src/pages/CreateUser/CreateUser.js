@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CreateUser.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import axios from 'axios';
 const CreateUser = () => {
   const { serverURL } = useSelector(state => state.serverURL);
   const [loading, setLoading] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState(null);
   const [successStatus, setSuccessStatus] = useState('');
   const [failureStatus, setFailureStatus] = useState('');
   const [userData, setUserData] = useState({
@@ -26,13 +27,17 @@ const CreateUser = () => {
   //handle change
   const handleChange = (e) => {
     if (e.target.name === 'photo') {
+      const file = e.target.files[0]
+      setPhotoPreview(URL.createObjectURL(file))
       setUserData({ ...userData, [e.target.name]: e.target.files[0] }); // For photo, store the file directly
     } else {
-      setUserData({ ...userData, [e.target.name]: e.target.value });
+      let value = e.target.value;
+      if (e.target.name === 'username' || e.target.name === 'email') {
+        value = e.target.value.toLowerCase();
+      }
+      setUserData({ ...userData, [e.target.name]: value });
     }
   }
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,6 +70,7 @@ const CreateUser = () => {
       });
 
       if (response && response.status === 201) {
+        window.scrollTo(0, 0);
         setSuccessStatus(response.data.message);
         setUserData({
           username: '',
@@ -84,25 +90,25 @@ const CreateUser = () => {
         }, 3000);
       }
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 400 || error.response.status === 402) {
-          setFailureStatus(error.response.data.message);
-          setTimeout(() => {
-            setFailureStatus('');
-          }, 3000);
-        }
-      }
+      setFailureStatus(error?.response?.data.message);
+      setTimeout(() => {
+        setFailureStatus('');
+      }, 3000);
       console.error('Something went wrong while creating user. ', error);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className='create-user'>
       <div className='create-user-status'>
         {successStatus && <div className='create-user-success-status'>{successStatus}</div>}
+        {loading && <div className='create-user-success-status'>Loading, please wait...</div>}
         {failureStatus && <div className='create-user-failure-status'>{failureStatus}</div>}
       </div>
 
@@ -123,7 +129,7 @@ const CreateUser = () => {
             </div>
 
             <div className='create-user-lastname-input'>
-              <label htmlFor='firstname'>Lastname</label>
+              <label htmlFor='firstname'>Surname</label>
               <input type='text' value={userData.lastname} name='lastname' onChange={handleChange} />
             </div>
 
@@ -159,25 +165,9 @@ const CreateUser = () => {
               </div>
             </div>
 
-            <div className='create-user-department-input'>
-              <label htmlFor='department' >Department</label>
-              <select name='department' value={userData.department} onChange={handleChange}>
-                <option value='' disabled>Select Department</option>
-                <option value='Archeology'>Archeology</option>
-                <option value='Fine and Applied Arts'>Fine and Applied Arts</option>
-                <option value='Foreign Languages'>Foreign Languages</option>
-                <option value='Theatre and Film Studies'>Theatre and Film Studies</option>
-              </select>
-            </div>
-            {/* 
-            <div className='create-user-role-input'>
-              <label htmlFor='role' >Role</label>
-              <select name='role' value={userData.role} onChange={handleChange}>
-                <option value='' disabled>Select Role</option>
-                <option value='super admin'>Super Admin</option>
-                <option value='admin'>Admin</option>
-              </select>
-            </div> */}
+            {photoPreview && <div className='create-user-photo-input' style={{ width: '100%' }}>
+              <img src={photoPreview} alt='selected' style={{ width: '100px', height: '100px', margin: 'auto' }} />
+            </div>}
 
             <div className='create-user-photo-input'>
               <label htmlFor='photo' >Photo</label>

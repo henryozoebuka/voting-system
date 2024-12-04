@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './AddStudent.css'
 import { useSelector } from 'react-redux'
 import axios from 'axios';
@@ -7,6 +7,7 @@ const AddStudent = () => {
   const [loading, setLoading] = useState(false);
   const [successStatus, setSuccessStatus] = useState('');
   const [failureStatus, setFailureStatus] = useState('');
+  const [photoPreview, setPhotoPreview] = useState(null)
   const [userData, setUserData] = useState({
     regNo: '',
     firstname: '',
@@ -23,9 +24,17 @@ const AddStudent = () => {
   //handle submit
   const handleChange = (e) => {
     if (e.target.name === 'photo') {
-      setUserData({ ...userData, [e.target.name]: e.target.files[0] }); // For photo, store the file directly
+      setUserData({ ...userData, [e.target.name]: e.target.files[0] });
+      const file = e.target.files[0]
+      if (file) {
+        setPhotoPreview(URL.createObjectURL(file))
+      }
     } else {
-      setUserData({ ...userData, [e.target.name]: e.target.value });
+      let value = e.target.value;
+      if (e.target.name === 'regNo' || e.target.name === 'email') {
+        value = e.target.value.toLowerCase();
+      }
+      setUserData({ ...userData, [e.target.name]: value });
     }
   }
 
@@ -53,6 +62,7 @@ const AddStudent = () => {
       });
 
       if (response && response.status === 201) {
+        window.scrollTo(0, 0);
         setUserData({
           regNo: '',
           firstname: '',
@@ -72,31 +82,26 @@ const AddStudent = () => {
       }
 
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 400) {
-          setFailureStatus(error.response.data.message);
+        setFailureStatus(error.response.data.message);
           setTimeout(() => {
             setFailureStatus('');
           }, 3000)
-        }
-
-        if (error.response.status === 402) {
-          setFailureStatus(error.response.data.message);
-          setTimeout(() => {
-            setFailureStatus('');
-          }, 3000)
-        }
-      }
       console.error('Something went wrong while creating user. ', error)
     } finally {
       setLoading(false);
     }
   }
 
+  useEffect(() => {
+    // Scroll to the top when the component is mounted
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className='add-student'>
       <div className='add-student-status'>
         {successStatus && <div className='add-student-success-status'>{successStatus}</div>}
+        {loading && <div className='add-student-success-status'>Loading, please wait...</div>}
         {failureStatus && <div className='add-student-failure-status'>{failureStatus}</div>}
       </div>
 
@@ -117,7 +122,7 @@ const AddStudent = () => {
             </div>
 
             <div className='add-student-lastname-input'>
-              <label htmlFor='firstname'>Lastname</label>
+              <label htmlFor='firstname'>Surname</label>
               <input type='text' value={userData.lastname} name='lastname' onChange={handleChange} />
             </div>
 
@@ -147,7 +152,7 @@ const AddStudent = () => {
               <label htmlFor='department' >Department</label>
               <select name='department' value={userData.department} onChange={handleChange}>
                 <option value='' disabled>Select Department</option>
-                <option value='Archeology'>Archeology</option>
+                <option value='Archeology and Heritage Studies'>Archeology and Heritage Studies</option>
                 <option value='Combined Arts'>Combined Arts</option>
                 <option value='English and Literary Studies'>English and Literary Studies</option>
                 <option value='Fine and Applied Arts'>Fine and Applied Arts</option>
@@ -158,7 +163,7 @@ const AddStudent = () => {
                 <option value='Mass Communication'>Mass Communication</option>
                 <option value='Music'>Music</option>
                 <option value='Theatre and Film Studies'>Theatre and Film Studies</option>
-                <option value='Tourism and Heritage Studies'>Tourism and Heritage Studies</option>
+                <option value='Tourism'>Tourism</option>
 
               </select>
             </div>
@@ -169,7 +174,7 @@ const AddStudent = () => {
                 <option value='' disabled>Select Year</option>
                 <option value='First Year'>First Year</option>
                 <option value='Second Year'>Second Year</option>
-                <option value='Thrid Year'>Third Year</option>
+                <option value='Third Year'>Third Year</option>
                 <option value='Final Year'>Final Year</option>
               </select>
             </div>
@@ -191,6 +196,10 @@ const AddStudent = () => {
                 <option value='public relation officer'>Public Relation Officer</option>
               </select>
             </div>
+
+            {photoPreview && <div className='create-student-photo-input' style={{width: '100%'}}>
+              <img src={photoPreview} alt='selected' style={{width: '100px', height: '100px', margin: 'auto'}} />
+            </div>}
 
             <div className='create-student-photo-input'>
               <label htmlFor='photo' >Photo</label>

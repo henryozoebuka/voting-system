@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 import axios from 'axios';
 import { setVotes } from '../../redux/slices/votesSlice.js'
+import { setStudents } from '../../redux/slices/studentsSlice.js'
 
 const ElectionResult = () => {
     const { serverURL } = useSelector(state => state.serverURL);
@@ -19,17 +20,30 @@ const ElectionResult = () => {
     const [directorOfGames, setDirectorOfGames] = useState({});
     const [directorOfWelfare, setDirectorOfWelfare] = useState({});
     const [publicRelationOfficer, setPublicRelationOfficer] = useState({});
+    const [presidentNumberOfVotes, setPresidentNumberOfVotes] = useState(null);
+    const [vicePresidentNumberOfVotes, setVicePresidentNumberOfVotes] = useState(null);
+    const [secretaryGeneralNumberOfVotes, setSecretaryGeneralNumberOfVotes] = useState(null);
+    const [assistantSecretaryGeneralNumberOfVotes, setAssistantSecretaryGeneralNumberOfVotes] = useState(null);
+    const [financialSecretaryNumberOfVotes, setFinancialSecretaryNumberOfVotes] = useState(null);
+    const [treasurerNumberOfVotes, setTreasurerNumberOfVotes] = useState(null);
+    const [directorOfSocialsNumberOfVotes, setDirectorOfSocialsNumberOfVotes] = useState(null);
+    const [directorOfGamesNumberOfVotes, setDirectorOfGamesNumberOfVotes] = useState(null);
+    const [directorOfWelfareNumberOfVotes, setDirectorOfWelfareNumberOfVotes] = useState(null);
+    const [publicRelationOfficerNumberOfVotes, setPublicRelationOfficerNumberOfVotes] = useState(null);
+    
+    
     const [slide, setSlide] = useState(0);
     const [loading, setLoading] = useState(false);
 
 
     const dispatch = useDispatch();
-    const uniqueCategory = [...new Set(students.map(item => item.role))]
+    const uniqueCategory = [...new Set(students?.map(item => item.role))]
+
 
     //next button
     const nextButton = () => {
         if (slide < uniqueCategory.length - 2) {
-            setSlide(slide + 1)
+            setSlide(slide + 1) 
         }
     }
 
@@ -41,6 +55,23 @@ const ElectionResult = () => {
     }
 
     useEffect(() => {
+        if (!students.length) {
+            const fetchStudents = async () => {
+                try {
+                    setLoading(true);
+                    const responseStudents = await axios.get(`${serverURL}/fetchStudents`);
+                    if (responseStudents && responseStudents.status === 200) {
+                        dispatch(setStudents(responseStudents.data));
+                    }
+                } catch (error) {
+                    console.error('Something went wrong while logging in. ', error)
+                } finally {
+                    setLoading(false);
+                }
+            }
+            fetchStudents();
+        }
+
         const fetchVotes = async () => {
             try {
                 setLoading(true);
@@ -55,7 +86,7 @@ const ElectionResult = () => {
             }
         }
         fetchVotes();
-    }, [dispatch, serverURL])
+    }, [dispatch, serverURL, students])
 
     useEffect(() => {
         if (Array.isArray(votes)) {
@@ -64,68 +95,85 @@ const ElectionResult = () => {
 
                 //president
                 const presidentVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.president] = (acc[curr.president] || 0) + 1;
+                    // Check if curr.president is not empty or null
+                    if (curr.president && curr.president !== "") {
+                        acc[curr.president] = (acc[curr.president] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //vice president
                 const vicePresidentVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.vicePresident] = (acc[curr.vicePresident] || 0) + 1;
+                    if (curr.vicePresident && curr.vicePresident !== "") {
+                        acc[curr.vicePresident] = (acc[curr.vicePresident] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //secretary general
                 const secretaryGeneralVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.secretaryGeneral] = (acc[curr.secretaryGeneral] || 0) + 1;
+                    if (curr.secretaryGeneral && curr.secretaryGeneral !== "") {
+                        acc[curr.secretaryGeneral] = (acc[curr.secretaryGeneral] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //secretary general
                 const assistantSecretaryGeneralVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.assistantSecretaryGeneral] = (acc[curr.assistantSecretaryGeneral] || 0) + 1;
+                    if (curr.assistantSecretaryGeneral && curr.assistantSecretaryGeneral !== "") {
+                        acc[curr.assistantSecretaryGeneral] = (acc[curr.assistantSecretaryGeneral] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //financial secretary
                 const financialSecretaryVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.financialSecretary] = (acc[curr.financialSecretary] || 0) + 1;
+                    if (curr.financialSecretary && curr.financialSecretary !== "") {
+                        acc[curr.financialSecretary] = (acc[curr.financialSecretary] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //treasurer
                 const treasurerVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.treasurer] = (acc[curr.treasurer] || 0) + 1;
+                    if (curr.treasurer && curr.treasurer !== "") {
+                        acc[curr.treasurer] = (acc[curr.treasurer] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //director of socials
                 const directorOfSocialsVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.directorOfSocials] = (acc[curr.directorOfSocials] || 0) + 1;
+                    if (curr.directorOfSocials && curr.directorOfSocials !== "") {
+                        acc[curr.directorOfSocials] = (acc[curr.directorOfSocials] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //director of games
                 const directorOfGamesVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.directorOfGames] = (acc[curr.directorOfGames] || 0) + 1;
+                    if (curr.directorOfGames && curr.directorOfGames !== "") {
+                        acc[curr.directorOfGames] = (acc[curr.directorOfGames] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //director of welfare
                 const directorOfWelfareVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.directorOfWelfare] = (acc[curr.directorOfWelfare] || 0) + 1;
+                    if (curr.directorOfWelfare && curr.directorOfWelfare !== "") {
+                        acc[curr.directorOfWelfare] = (acc[curr.directorOfWelfare] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
                 //public relation officer
                 const publicRelationOfficerVoteCalculations = votes.reduce((acc, curr) => {
-                    acc[curr.publicRelationOfficer] = (acc[curr.publicRelationOfficer] || 0) + 1;
+                    if (curr.publicRelationOfficer && curr.publicRelationOfficer !== "") {
+                        acc[curr.publicRelationOfficer] = (acc[curr.publicRelationOfficer] || 0) + 1;
+                    }
                     return acc;
                 }, {});
 
-                // const secretaryVoteCalculations = votes.reduce((acc, curr) => {
-                //     acc[curr.secretary] = (acc[curr.secretary] || 0) + 1;
-                //     return acc;
-                // }, {});
 
                 setPresident(presidentVoteCalculations);
                 setVicePresident(vicePresidentVoteCalculations);
@@ -141,21 +189,56 @@ const ElectionResult = () => {
             }
             voteCalculations();
         } else { console.error('Votes is not an array', votes); }
+
+        // number of votes
+        const numberOfVotes = () => {
+            const presidentNumberOfVotesCount = votes?.filter(vote => vote.president !== "");
+            setPresidentNumberOfVotes(presidentNumberOfVotesCount.length);
+
+            const vicePresidentNumberOfVotesCount = votes?.filter(vote => vote.vicePresident !== "");
+            setVicePresidentNumberOfVotes(vicePresidentNumberOfVotesCount.length);
+
+            const secretaryGeneralNumberOfVotesCount = votes?.filter(vote => vote.secretaryGeneral !== "");
+            setSecretaryGeneralNumberOfVotes(secretaryGeneralNumberOfVotesCount.length);
+
+            const assistantSecretaryGeneralNumberOfVotesCount = votes?.filter(vote => vote.assistantSecretaryGeneral !== "")
+            setAssistantSecretaryGeneralNumberOfVotes(assistantSecretaryGeneralNumberOfVotesCount.length);
+
+            const financialSecretaryNumberOfVotesCount = votes?.filter(vote => vote.financialSecretary !== "");
+            setFinancialSecretaryNumberOfVotes(financialSecretaryNumberOfVotesCount.length);
+
+            const treasurerNumberOfVotesCount = votes?.filter(vote => vote.treasurer !== "");
+            setTreasurerNumberOfVotes(treasurerNumberOfVotesCount.length);
+
+            const directorOfSocialsNumberOfVotesCount = votes?.filter(vote => (vote.directorOfSocials !== ""));
+            setDirectorOfSocialsNumberOfVotes(directorOfSocialsNumberOfVotesCount.length);
+
+            const directorOfGamesNumberOfVotesCount = votes?.filter(vote => vote.directorOfGames !== "");
+            setDirectorOfGamesNumberOfVotes(directorOfGamesNumberOfVotesCount.length);
+
+            const directorOfWelfareNumberOfVotesCount = votes?.filter(vote => vote.directorOfWelfare !== "");
+            setDirectorOfWelfareNumberOfVotes(directorOfWelfareNumberOfVotesCount.length);
+
+            const publicRelationOfficerNumberOfVotesCount = votes?.filter(vote => vote.publicRelationOfficer !== "");
+            setPublicRelationOfficerNumberOfVotes(publicRelationOfficerNumberOfVotesCount.length);
+
+        }
+        numberOfVotes();
     }, [votes])
 
     return (
         <div className='election-result'>
             <div className='election-result-form-action-buttons-div'>
-                <button type='button' onClick={previousButton}><GrLinkPrevious />Previous</button>
-                <button type='button' onClick={nextButton}>Next<GrLinkNext /></button>
+                <button type='button' onClick={() => {previousButton();}}><GrLinkPrevious />Previous</button>
+                <button type='button' onClick={() => {nextButton();}}>Next<GrLinkNext /></button>
             </div>
             {
-                    loading ?
-                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
-                            <p>Loading, please wait...</p>
-                        </div> :
-            <div className='election-result-wrapper'>
-                
+                loading ?
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                        <p>Loading, please wait...</p>
+                    </div> :
+                    <div className='election-result-wrapper'>
+
                         <div className='election-result-category' style={{ transform: `translateX(${slide * -100}%)` }}>
 
                             {/* president section */}
@@ -163,9 +246,14 @@ const ElectionResult = () => {
                                 <div className='election-result-section-title'>
                                     <h2>President</h2>
                                 </div>
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{presidentNumberOfVotes}</p>
+                                </div>
                                 {
                                     Object.keys(president).map((item, index) => {
                                         const findStudent = students.find(student => student.regNo === item);
+
                                         return <div key={item || index} className='election-result-vote-details-wrapper' style={{ borderRadius: '5px', marginBottom: '5px', backgroundColor: index % 2 ? '#ffffff' : '#e0e3e1' }}>
                                             <div className='election-result-vote-count-details'>
                                                 <p>{findStudent?.firstname}</p>
@@ -191,6 +279,10 @@ const ElectionResult = () => {
                             <div className='election-result-section'>
                                 <div className='election-result-section-title'>
                                     <h2>Vice President</h2>
+                                </div>
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{vicePresidentNumberOfVotes}</p>
                                 </div>
                                 {
                                     Object.keys(vicePresident).map((item, index) => {
@@ -220,6 +312,11 @@ const ElectionResult = () => {
                             <div className='election-result-section'>
                                 <div className='election-result-section-title'>
                                     <h2>Secretary General</h2>
+                                </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{secretaryGeneralNumberOfVotes}</p>
                                 </div>
                                 {
                                     Object.keys(secretaryGeneral).map((item, index) => {
@@ -251,6 +348,11 @@ const ElectionResult = () => {
                                 <div className='election-result-section-title'>
                                     <h2>Assistant Secretary General</h2>
                                 </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{assistantSecretaryGeneralNumberOfVotes}</p>
+                                </div>
                                 {
                                     Object.keys(assistantSecretaryGeneral).map((item, index) => {
                                         const findStudent = students.find(student => student.regNo === item);
@@ -280,6 +382,11 @@ const ElectionResult = () => {
                             <div className='election-result-section'>
                                 <div className='election-result-section-title'>
                                     <h2>Financial Secretary</h2>
+                                </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{financialSecretaryNumberOfVotes}</p>
                                 </div>
                                 {
                                     Object.keys(financialSecretary).map((item, index) => {
@@ -311,6 +418,11 @@ const ElectionResult = () => {
                                 <div className='election-result-section-title'>
                                     <h2>Treasurer</h2>
                                 </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{treasurerNumberOfVotes}</p>
+                                </div>
                                 {
                                     Object.keys(treasurer).map((item, index) => {
                                         const findStudent = students.find(student => student.regNo === item);
@@ -339,6 +451,11 @@ const ElectionResult = () => {
                             <div className='election-result-section'>
                                 <div className='election-result-section-title'>
                                     <h2>Director of Socials</h2>
+                                </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{directorOfSocialsNumberOfVotes}</p>
                                 </div>
                                 {
                                     Object.keys(directorOfSocials).map((item, index) => {
@@ -370,6 +487,11 @@ const ElectionResult = () => {
                                 <div className='election-result-section-title'>
                                     <h2>Director Of Games</h2>
                                 </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{directorOfGamesNumberOfVotes}</p>
+                                </div>
                                 {
                                     Object.keys(directorOfGames).map((item, index) => {
                                         const findStudent = students.find(student => student.regNo === item);
@@ -399,6 +521,11 @@ const ElectionResult = () => {
                             <div className='election-result-section'>
                                 <div className='election-result-section-title'>
                                     <h2>director Of Welfare</h2>
+                                </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{directorOfWelfareNumberOfVotes}</p>
                                 </div>
                                 {
                                     Object.keys(directorOfWelfare).map((item, index) => {
@@ -430,6 +557,11 @@ const ElectionResult = () => {
                                 <div className='election-result-section-title'>
                                     <h2>Public Relation Officer</h2>
                                 </div>
+
+                                <div style={{display: 'flex', columnGap: '10px'}}>
+                                    <p style={{fontWeight: 'bold', color: 'green'}}>Total votes:</p>
+                                    <p style={{fontWeight: 'bold' }}>{publicRelationOfficerNumberOfVotes}</p>
+                                </div>
                                 {
                                     Object.keys(publicRelationOfficer).map((item, index) => {
                                         const findStudent = students.find(student => student.regNo === item);
@@ -454,48 +586,9 @@ const ElectionResult = () => {
                                 }
                             </div>
 
+                      </div>
 
-
-
-
-
-
-
-
-
-                            {/* <div>
-                    <h1> President </h1>
-                    {president &&
-                        <div>
-                            <p>student1: {president.student1 ? president.student1 : 0}</p>
-                            <div style={{ height: '5px', backgroundColor: 'yellow', width: `${(president.student1 / Object.values(president).reduce((a, b) => a + b, 0)) * 100}%` }}></div>
-
-                            <p>student2: {president.student2 ? president.student2 : 0}</p>
-                            <div style={{ height: '5px', backgroundColor: 'yellow', width: `${(president.student2 / Object.values(president).reduce((a, b) => a + b, 0)) * 100}%` }}></div>
-                            <p>student3: {president.student3 ? president.student3 : 0}</p>
-                            <div style={{ height: '5px', backgroundColor: 'yellow', width: `${(president.student3 / Object.values(president).reduce((a, b) => a + b, 0)) * 100}%` }}></div>
-                        </div>
-                    }
-                </div>
-
-
-                <div>
-                    <h1> Secretary </h1>
-                    {secretary &&
-                        <div>
-                            <p>student4: {secretary.student4 ? secretary.student4 : 0}</p>
-                            <div style={{ height: '5px', backgroundColor: 'yellow', width: `${(secretary.student4 / Object.values(secretary).reduce((a, b) => a + b, 0)) * 100}%` }}></div>
-                            <p>student5: {secretary.student5 ? secretary.student5 : 0}</p>
-                            <div style={{ height: '5px', backgroundColor: 'yellow', width: `${(secretary.student5 / Object.values(secretary).reduce((a, b) => a + b, 0)) * 100}%` }}></div>
-                            <p>student6: {secretary.student6 ? secretary.student6 : 0}</p>
-                            <div style={{ height: '5px', backgroundColor: 'yellow', width: secretary.student6 ? `${(secretary.student6 / Object.values(secretary).reduce((a, b) => a + b, 0)) * 100}% : 0` : '0px' }}></div>
-                        </div>
-                    }
-                </div> */}
-
-                        </div>
-                
-            </div>
+                    </div>
             }
         </div>
     )

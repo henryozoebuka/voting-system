@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 const User = () => {
 
-    const { serverURL } = useSelector(state => state.serverURL);
     const { user } = useSelector(state => state.user);
     const [actions, setActions] = useState();
 
@@ -23,7 +22,6 @@ const User = () => {
                     <p>My Profile</p>
                 </div>
                 <div className='user-navigation'>
-            
                     <button className='user-navigation-buttons' onClick={toggleActions}>{actions ? 'Close Actions' : 'Actions'}</button>
                     {actions && <div className='user-navigation-buttons-div'>
                         <button className='user-navigation-action' onClick={() => { navigate('/user') }}>My Profile</button>
@@ -35,12 +33,12 @@ const User = () => {
                     </div>}
                 </div>
                 <div className='user-photo-div'>
-                    <img src={`${serverURL}/${user.photo}`} alt={user.firstname} />
+                    <img src={user.photo} alt={user.firstname} />
                 </div>
                 <div className='user-details'>
                     <div className='user-details-info'>
                         <p>Username: </p>
-                        <p>{user.username}</p>
+                        <p style={{textTransform: 'lowercase'}}>{user.username}</p>
                     </div>
                     <div className='user-details-info'>
                         <p>Firstname: </p>
@@ -49,6 +47,10 @@ const User = () => {
                     <div className='user-details-info'>
                         <p>Surname: </p>
                         <p>{user.lastname}</p>
+                    </div>
+                    <div className='user-details-info'>
+                        <p>Email: </p>
+                        <p style={{textTransform: 'lowercase'}}>{user.email}</p>
                     </div>
                     <div className='user-details-info'>
                         <p>Role: </p>

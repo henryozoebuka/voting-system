@@ -11,6 +11,7 @@ const Vote = () => {
     const { serverURL } = useSelector(state => state.serverURL);
     const { students } = useSelector(state => state.students);
     const { id } = useParams();
+    const [loading, setLoading] = useState(false);
     const [slide, setSlide] = useState(0);
     const [voted, setVoted] = useState(false);
     const [failureStatus, setFailureStatus] = useState('');
@@ -32,17 +33,17 @@ const Vote = () => {
     // const filterCurrentStudent = students.find(student => student._id === id);
     const [vote, setVote] = useState({
         studentId: id,
-          voterNumber: '',
-          president: '',
-          vicePresident: '',
-          secretaryGeneral: '',
-          assistantSecretaryGeneral: '',
-          financialSecretary: '',
-          treasurer: '',
-          directorOfSocials: '',
-          directorOfGames: '',
-          directorOfWelfare: '',
-          publicRelationOfficer: '',
+        voterNumber: '',
+        president: '',
+        vicePresident: '',
+        secretaryGeneral: '',
+        assistantSecretaryGeneral: '',
+        financialSecretary: '',
+        treasurer: '',
+        directorOfSocials: '',
+        directorOfGames: '',
+        directorOfWelfare: '',
+        publicRelationOfficer: '',
     });
 
     const filterPresidents = students.filter(contestants => contestants.role === 'president');
@@ -67,14 +68,16 @@ const Vote = () => {
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
+            setLoading(true);
             const response = await axios.post(`${serverURL}/addVote`, vote)
             if (response && [201, 202].includes(response.status)) {
+                window.scrollTo(0, 0);
                 setVoted(true);
                 setTimeout(() => {
                     navigate('/students');
                 }, 3000);
             }
-            
+
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 400) {
@@ -85,12 +88,14 @@ const Vote = () => {
                 }
             }
             console.error('Something went wrong while casting your vote. ', error)
+        } finally {
+            setLoading(false);
         }
     }
 
     //next button
     const nextButton = () => {
-        if (slide < uniqueCategory.length - 2) {
+        if (slide < uniqueCategory.length - 1) {
             setSlide(slide + 1)
         }
     }
@@ -126,7 +131,7 @@ const Vote = () => {
             publicRelationOfficer: findSelectedPublicRelationOfficer,
         });
     }, [students, vote]);
-    
+
     useEffect(() => {
         const currentStudent = students.find(student => student._id === id);
         if (currentStudent) {
@@ -136,7 +141,7 @@ const Vote = () => {
             }));
         }
     }, [students, id]);
-    
+
 
     return (
         <div className='vote'>
@@ -159,11 +164,13 @@ const Vote = () => {
                                         }
                                         {filterPresidents && filterPresidents.length ?
                                             filterPresidents.map((president, index) => (
-                                                <div key={president._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
+                                                <label style={{ cursor: 'pointer' }}>
+                                                    <div key={president._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={president.regNo} name='president' onChange={handleChange} />
                                                     <p>{president.firstname}</p>
                                                     <p>{president.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -180,11 +187,15 @@ const Vote = () => {
                                         }
                                         {filterVicePresidents && filterVicePresidents.length ?
                                             filterVicePresidents.map((vicePresident, index) => (
-                                                <div key={vicePresident._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
-                                                    <input type='radio' value={vicePresident.regNo} name='vicePresident' onChange={handleChange} />
-                                                    <p>{vicePresident.firstname}</p>
-                                                    <p>{vicePresident.lastname}</p>
-                                                </div>
+                                                <label style={{ cursor: 'pointer' }}>
+                                                    <div key={vicePresident._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
+
+                                                        <input type='radio' value={vicePresident.regNo} name='vicePresident' onChange={handleChange} />
+                                                        <p>{vicePresident.firstname}</p>
+                                                        <p>{vicePresident.lastname}</p>
+
+                                                    </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -192,7 +203,7 @@ const Vote = () => {
                             }
 
 
-{
+                            {
                                 filterSecretaryGenerals && filterSecretaryGenerals.length ?
                                     <div className='vote-category-section'>
                                         {
@@ -202,11 +213,13 @@ const Vote = () => {
                                         }
                                         {filterSecretaryGenerals && filterSecretaryGenerals.length ?
                                             filterSecretaryGenerals.map((secretaryGeneral, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={secretaryGeneral._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={secretaryGeneral.regNo} name='secretaryGeneral' onChange={handleChange} />
                                                     <p>{secretaryGeneral.firstname}</p>
                                                     <p>{secretaryGeneral.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -224,11 +237,13 @@ const Vote = () => {
                                         }
                                         {filterAssistantSecretaryGenerals && filterAssistantSecretaryGenerals.length ?
                                             filterAssistantSecretaryGenerals.map((assistantSecretaryGeneral, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={assistantSecretaryGeneral._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={assistantSecretaryGeneral.regNo} name='assistantSecretaryGeneral' onChange={handleChange} />
                                                     <p>{assistantSecretaryGeneral.firstname}</p>
                                                     <p>{assistantSecretaryGeneral.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -246,11 +261,13 @@ const Vote = () => {
                                         }
                                         {filterFinancialSecretaries && filterFinancialSecretaries.length ?
                                             filterFinancialSecretaries.map((financialSecretary, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={financialSecretary._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={financialSecretary.regNo} name='financialSecretary' onChange={handleChange} />
                                                     <p>{financialSecretary.firstname}</p>
                                                     <p>{financialSecretary.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -268,11 +285,13 @@ const Vote = () => {
                                         }
                                         {filterTreasurers && filterTreasurers.length ?
                                             filterTreasurers.map((treasurer, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={treasurer._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={treasurer.regNo} name='treasurer' onChange={handleChange} />
                                                     <p>{treasurer.firstname}</p>
                                                     <p>{treasurer.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -289,11 +308,13 @@ const Vote = () => {
                                         }
                                         {filterDirectorOfSocials && filterDirectorOfSocials.length ?
                                             filterDirectorOfSocials.map((directorOfSocials, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={directorOfSocials._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={directorOfSocials.regNo} name='directorOfSocials' onChange={handleChange} />
                                                     <p>{directorOfSocials.firstname}</p>
                                                     <p>{directorOfSocials.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -311,11 +332,13 @@ const Vote = () => {
                                         }
                                         {filterDirectorOfGames && filterDirectorOfGames.length ?
                                             filterDirectorOfGames.map((directorOfGames, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={directorOfGames._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={directorOfGames.regNo} name='directorOfGames' onChange={handleChange} />
                                                     <p>{directorOfGames.firstname}</p>
                                                     <p>{directorOfGames.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -333,11 +356,13 @@ const Vote = () => {
                                         }
                                         {filterDirectorOfWelfare && filterDirectorOfWelfare.length ?
                                             filterDirectorOfWelfare.map((directorOfWelfare, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={directorOfWelfare._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={directorOfWelfare.regNo} name='directorOfWelfare' onChange={handleChange} />
                                                     <p>{directorOfWelfare.firstname}</p>
                                                     <p>{directorOfWelfare.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -355,11 +380,13 @@ const Vote = () => {
                                         }
                                         {filterPublicRelationOfficers && filterPublicRelationOfficers.length ?
                                             filterPublicRelationOfficers.map((publicRelationOfficer, index) => (
+                                                <label style={{ cursor: 'pointer' }}>
                                                 <div key={publicRelationOfficer._id || index} className='vote-contestant' style={{ backgroundColor: index % 2 ? "#ffffff" : '#e0e3e1' }}>
                                                     <input type='radio' value={publicRelationOfficer.regNo} name='publicRelationOfficer' onChange={handleChange} />
                                                     <p>{publicRelationOfficer.firstname}</p>
                                                     <p>{publicRelationOfficer.lastname}</p>
                                                 </div>
+                                                </label>
                                             )) :
                                             <no>No contestants yet.</no>
                                         }
@@ -440,7 +467,7 @@ const Vote = () => {
                                 }
 
                                 <div className='vote-submit-div'>
-                                    <input type='submit' value={'Submit'} className='vote-submit' />
+                                    <input type='submit' value={loading ? 'Submitting' : 'Submit'} disabled={loading} className='vote-submit' style={{ backgroundColor: loading && 'transparent' }} />
                                 </div>
 
 

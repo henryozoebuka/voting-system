@@ -9,6 +9,7 @@ const EditStudent = () => {
     const [loading, setLoading] = useState(false);
     const [successStatus, setSuccessStatus] = useState('');
     const [failureStatus, setFailureStatus] = useState('');
+    const [previewPhoto, setPreviewPhoto] = useState(null);
     const [studentData, setStudentData] = useState({
         regNo: '',
         firstname: '',
@@ -30,12 +31,17 @@ const EditStudent = () => {
     //handle change
     const handleChange = (e) => {
         if (e.target.name === 'photo') {
-            setStudentData({ ...studentData, [e.target.name]: e.target.files[0] }); 
+            setStudentData({ ...studentData, [e.target.name]: e.target.files[0] });
+            setPreviewPhoto(URL.createObjectURL(e.target.files[0]))
         } else {
-            setStudentData({ ...studentData, [e.target.name]: e.target.value });
+            let value = e.target.value;
+            if (e.target.name === 'regNo' || e.target.name === 'email') {
+                value = e.target.value.toLowerCase();
+            }
+            setStudentData({ ...studentData, [e.target.name]: value });
         }
     }
-    
+
     //handle submit
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -54,13 +60,12 @@ const EditStudent = () => {
                     formData.append(key, studentData[key]);
                 }
             });
-            
 
             const response = await axios.patch(`${serverURL}/editStudent/${id}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             if (response && response.status === 200) {
-                alert(response.data.message)
+                window.scrollTo(0, 0);
                 setSuccessStatus(response.data.message);
                 setTimeout(() => {
                     setSuccessStatus('');
@@ -68,26 +73,19 @@ const EditStudent = () => {
             }
 
         } catch (error) {
-            if (error.response) {
-                if (error.response.status === 400) {
-                    setFailureStatus(error.response.data.message);
-                    setTimeout(() => {
-                        setFailureStatus('');
-                    }, 3000)
-                }
-
-                if (error.response.status === 402) {
-                    setFailureStatus(error.response.data.message);
-                    setTimeout(() => {
-                        setFailureStatus('');
-                    }, 3000)
-                }
-            }
+            setFailureStatus(error.response.data.message);
+            setTimeout(() => {
+                setFailureStatus('');
+            }, 3000)
             console.error('Something went wrong while editing student. ', error)
         } finally {
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         const fetchStudent = () => {
@@ -112,6 +110,7 @@ const EditStudent = () => {
         <div className='add-student'>
             <div className='add-student-status'>
                 {successStatus && <div className='add-student-success-status'>{successStatus}</div>}
+                {loading && <div className='add-student-success-status'>Loading, please wait...</div>}
                 {failureStatus && <div className='add-student-failure-status'>{failureStatus}</div>}
             </div>
 
@@ -132,7 +131,7 @@ const EditStudent = () => {
                         </div>
 
                         <div className='add-student-lastname-input'>
-                            <label htmlFor='firstname'>Lastname</label>
+                            <label htmlFor='lastname'>Surname</label>
                             <input type='text' value={studentData.lastname} name='lastname' onChange={handleChange} />
                         </div>
 
@@ -197,7 +196,14 @@ const EditStudent = () => {
                                 <option value='public relation officer'>Public Relation Officer</option>
                             </select>
                         </div>
-
+                        {previewPhoto ?
+                            <div className='create-user-photo-input' style={{ width: '100%' }}>
+                                <img src={previewPhoto} alt={studentData.firstname} style={{ width: '100px', height: '100px', margin: 'auto' }} />
+                            </div> :
+                            <div className='create-user-photo-input' style={{ width: '100%' }}>
+                                <img src={studentData.photo} alt={studentData.firstname} style={{ width: '100px', height: '100px', margin: 'auto' }} />
+                            </div>
+                        }
                         <div className='create-student-photo-input'>
                             <label htmlFor='photo' >Photo</label>
                             <input type='file' name='photo' onChange={handleChange} className='ret' />

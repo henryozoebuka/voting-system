@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './SuperAdminUser.css';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { GrLinkPrevious } from "react-icons/gr";
 import axios from 'axios';
 
 const SuperAdminUser = () => {
@@ -52,27 +51,23 @@ const SuperAdminUser = () => {
                     <p>User Profile</p>
                 </div>
                 <div className='super-admin-user-navigation'>
-                    <GrLinkPrevious className='super-admin-user-navigation-buttons' size={30} color='green' style={{ cursor: 'pointer' }} onClick={() => { navigate('/users') }} />
-                    <div style={{display: 'flex', columnGap: '5px'}}>
+                    <div style={{display: 'flex', columnGap: '5px', margin: 'auto'}}>
                     <button className='super-admin-user-navigation-buttons' disabled={loading} onClick={() => { navigate(`/edituser/${superAdminUser._id}`) }}>Edit User</button>
                     <button className='super-admin-user-navigation-buttons' onClick={() => { setDeleteAlert(true) }}>Delete User</button>
                     {deleteAlert && <div className='super-admin-user-delete-alert-div'>
                             <div className='super-admin-user-delete-alert'>
-                            <p>Are you sure you want to delete <span style={{fontWeight: 'bold'}}>{superAdminUser.firstname} {superAdminUser.lastname}</span> account?</p>
+                            <p>Are you sure you want to delete <span style={{fontWeight: 'bold'}}>{superAdminUser.firstname} {superAdminUser.lastname}'s</span> account?</p>
                             <div className='super-admin-user-delete-alert-button-div'>
                             <button disabled={loading} onClick={() => { deleteUser(superAdminUser._id) }}>{loading ? 'Deleting User...' : 'Yes'}</button>
-                            <button onClick={() => { setDeleteAlert(false) }}>Cancel</button>
+                            <button onClick={() => { setDeleteAlert(false) }}>No</button>
                             </div>
                         </div>
                         </div>}
                     </div>
                 </div>
-                <div>
-                    <button className='super-admin-user-navigation-buttons' onClick={() => { navigate('/user') }}>My Profile</button>
-                </div>
-
+                
                 <div className='super-admin-user-photo-div'>
-                    <img src={`${serverURL}/${superAdminUser.photo}`} alt={superAdminUser.firstname} />
+                    <img src={superAdminUser.photo} alt={superAdminUser.firstname} />
                 </div>
                 <div className='super-admin-user-details'>
                     <div className='super-admin-user-details-info'>

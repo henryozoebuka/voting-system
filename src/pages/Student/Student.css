@@ -140,6 +140,7 @@
     border: dotted 5px green;
     overflow: hidden;
     margin: auto;
+    margin-top: 10px;
     margin-bottom: 20px;
 }
 
